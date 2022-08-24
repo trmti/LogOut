@@ -1,8 +1,8 @@
-import { serve } from "https://deno.land/std@0.114.0/http/server.ts";
-import * as postgres from "https://deno.land/x/postgres@v0.14.2/mod.ts";
+import { serve } from 'https://deno.land/std@0.114.0/http/server.ts';
+import * as postgres from 'https://deno.land/x/postgres@v0.14.2/mod.ts';
 
 // Get the connection string from the environment variable "DATABASE_URL"
-const databaseUrl = Deno.env.get("DATABASE_URL")!;
+const databaseUrl = Deno.env.get('DATABASE_URL')!;
 
 // Create a database pool with three connections that are lazily established
 const pool = new postgres.Pool(databaseUrl, 3, true);
@@ -26,8 +26,8 @@ serve(async (req) => {
   // Parse the URL and check that the requested endpoint is /todos. If it is
   // not, return a 404 response.
   const url = new URL(req.url);
-  if (url.pathname !== "/todos") {
-    return new Response("Not Found", { status: 404 });
+  if (url.pathname !== '/todos') {
+    return new Response('Not Found', { status: 404 });
   }
 
   // Grab a connection from the database pool
@@ -35,7 +35,8 @@ serve(async (req) => {
 
   try {
     switch (req.method) {
-      case "GET": { // This is a GET request. Return a list of all todos.
+      case 'GET': {
+        // This is a GET request. Return a list of all todos.
         // Run the query
         const result = await connection.queryObject`
           SELECT * FROM todos
@@ -46,15 +47,16 @@ serve(async (req) => {
 
         // Return the result as JSON
         return new Response(body, {
-          headers: { "content-type": "application/json" },
+          headers: { 'content-type': 'application/json' },
         });
       }
-      case "POST": { // This is a POST request. Create a new todo.
+      case 'POST': {
+        // This is a POST request. Create a new todo.
         // Parse the request body as JSON. If the request body fails to parse,
         // is not a string, or is longer than 256 chars, return a 400 response.
         const title = await req.json().catch(() => null);
-        if (typeof title !== "string" || title.length > 256) {
-          return new Response("Bad Request", { status: 400 });
+        if (typeof title !== 'string' || title.length > 256) {
+          return new Response('Bad Request', { status: 400 });
         }
 
         // Insert the new todo into the database
@@ -63,10 +65,11 @@ serve(async (req) => {
         `;
 
         // Return a 201 Created response
-        return new Response("", { status: 201 });
+        return new Response('', { status: 201 });
       }
-      default: // If this is neither a POST, or a GET return a 405 response.
-        return new Response("Method Not Allowed", { status: 405 });
+      default:
+        // If this is neither a POST, or a GET return a 405 response.
+        return new Response('Method Not Allowed', { status: 405 });
     }
   } catch (err) {
     console.error(err);
