@@ -31,6 +31,7 @@ try {
     CREATE TABLE IF NOT EXISTS nftPersonalDatas (
       id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
       tokenId INT REFERENCES nftMetaDatas(tokenId),
+      tokenOwnerAddress VARCHAR(42) NOT NULL,
       level INT DEFAULT 1,
       damages DAMAGE[],
       sleeps SLEEP[]
