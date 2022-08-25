@@ -17,7 +17,7 @@ try {
       name TEXT NOT NULL,
       description TEXT NOT NULL,
       image TEXT NOT NULL,
-      HP FLOAT8 NOT NULL,
+      HP FLOAT NOT NULL,
     )
   `;
   await connection.queryObject`
@@ -28,6 +28,8 @@ try {
       damages INT[][2] NOT NULL,
     )
   `;
+} catch (e) {
+  console.error(e);
 } finally {
   // Release the connection back into the pool
   connection.release();
