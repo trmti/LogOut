@@ -104,9 +104,9 @@ serve(async (req) => {
           }
           case 'addDamage': {
             const params = await req.json();
-            if (params.datetime && params.damage) {
+            if (params.datetime && params.damage && params.id) {
               await connection.queryObject`
-                INSERT INTO nftPersonalDatas (damages) VALUES (ROW(${params.datetime}, ${params.damage}))
+                INSERT INTO nftPersonalDatas (damages) VALUES (ROW(${params.datetime}, ${params.damage})) WHERE id = ${params.id}
               `;
               return new Response(`Added damage`, { status: 200 });
             }
@@ -116,9 +116,9 @@ serve(async (req) => {
           }
           case 'addSleepLog': {
             const params = await req.json();
-            if ((params.date, params.duration)) {
+            if (params.date && params.duration && params.id) {
               await connection.queryObject`
-                INSERT INTO nftPersonalDatas (sleeps) VALUE (ROW(${params.date}, ${params.duration}))
+                INSERT INTO nftPersonalDatas (sleeps) VALUE (ROW(${params.date}, ${params.duration})) WHERE id = ${params.id}
               `;
               return new Response(`Added sleep log`, { status: 200 });
             }
