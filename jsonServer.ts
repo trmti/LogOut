@@ -20,15 +20,6 @@ try {
       HP FLOAT NOT NULL)
   `;
   await connection.queryObject`
-    CREATE TYPE IF NOT EXISTS DAMAGE AS (
-      date TIMESTAMP,
-      damage INT
-    );
-    CREATE TYPE IF NOT EXISTS SLEEP AS (
-      date DATE,
-      duration INT
-    );
-
     CREATE TABLE IF NOT EXISTS nftPersonalDatas (
       id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
       tokenId INT REFERENCES nftMetaDatas(tokenId),
