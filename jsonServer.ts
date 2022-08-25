@@ -92,9 +92,9 @@ serve(async (req) => {
         switch (urls[2]) {
           case 'levelUp': {
             const params = await req.json();
-            if (params.level) {
+            if (params.level && params.id) {
               await connection.queryObject`
-                UPDATE nftPersonalDatas SET level = level + ${params.level}
+                UPDATE nftPersonalDatas SET level = level + ${params.level} WHERE id = ${params.id}
               `;
               return new Response(`Updated level`, { status: 200 });
             }
