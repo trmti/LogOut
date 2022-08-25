@@ -52,8 +52,12 @@ serve(async (req) => {
           }
           case 'POST': {
             const params = await req.json();
-            console.log(typeof params.name);
-            console.log(`'${params.name}'`);
+            console.log(
+              params.name,
+              params.description,
+              params.image,
+              params.HP
+            );
             if (params !== null) {
               await connection.queryObject`
                 INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES ('${params.name}', '${params.description}', '${params.image}', 100)
