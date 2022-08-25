@@ -86,73 +86,76 @@ serve(async (req) => {
         }
       }
 
-      // case 'personalData': {
-      //   console.log(urls[2]);
-      //   return new Response('success', { status: 200 });
-      //   // switch (urls[2]) {
-      //   //   // case 'levelUp': {
-      //   //   //   if (params.level) {
-      //   //   //     await connection.queryObject`
-      //   //   //       UPDATE nftPersonalDatas SET level = level + ${params.level}
-      //   //   //     `;
-      //   //   //     return new Response(`Updated level`, { status: 200 });
-      //   //   //   }
-      //   //   //   return new Response('Insert Value Failed. You may mistake params', {
-      //   //   //     status: 400,
-      //   //   //   });
-      //   //   // }
-      //   //   // case 'addDamage': {
-      //   //   //   if (params.datetime && params.damage) {
-      //   //   //     await connection.queryObject`
-      //   //   //       INSERT INTO nftPersonalDatas (damages) VALUES (ROW(${params.datetime}, ${params.damage}))
-      //   //   //     `;
-      //   //   //     return new Response(`Added damage`, { status: 200 });
-      //   //   //   }
-      //   //   //   return new Response('Insert Value Failed. You may mistake params', {
-      //   //   //     status: 400,
-      //   //   //   });
-      //   //   // }
-      //   //   // case 'addSleepLog': {
-      //   //   //   if ((params.date, params.duration)) {
-      //   //   //     await connection.queryObject`
-      //   //   //       INSERT INTO nftPersonalDatas (sleeps) VALUE (ROW(${params.date}, ${params.duration}))
-      //   //   //     `;
-      //   //   //     return new Response(`Added sleep log`, { status: 200 });
-      //   //   //   }
-      //   //   //   return new Response('Insert Value Failed. You may mistake params', {
-      //   //   //     status: 400,
-      //   //   //   });
-      //   //   // }
-      //   //   default: {
-      //   //     switch (req.method) {
-      //   //       case 'GET': {
-      //   //         const nftPersonalDatas = await connection.queryObject`
-      //   //           SELECT * FROM nftPersonalDatas
-      //   //         `;
-      //   //         const body = JSON.stringify(nftPersonalDatas.rows, null, 2);
-      //   //         return new Response(body, {
-      //   //           headers: { 'Content-Type': 'application/json' },
-      //   //         });
-      //   //       }
-      //   //       case 'POST': {
-      //   //         if (params.tokenId) {
-      //   //           await connection.queryObject`
-      //   //             INSERT INTO nftPersonalDatas (tokenId) VALUES (${params.tokenId})
-      //   //           `;
-      //   //           return new Response(`Inserted value ${params.tokenId}`, {
-      //   //             status: 200,
-      //   //           });
-      //   //         } else {
-      //   //           return new Response('Insert Value Failed', { status: 500 });
-      //   //         }
-      //   //       }
-      //   //       default: {
-      //   //         return new Response('Invalid method', { status: 400 });
-      //   //       }
-      //   //     }
-      //   //   }
-      //   // }
-      // }
+      case 'personalData': {
+        console.log(urls[2]);
+        switch (urls[2]) {
+          case 'levelUp': {
+            const params = await req.json();
+            if (params.level) {
+              await connection.queryObject`
+                UPDATE nftPersonalDatas SET level = level + ${params.level}
+              `;
+              return new Response(`Updated level`, { status: 200 });
+            }
+            return new Response('Insert Value Failed. You may mistake params', {
+              status: 400,
+            });
+          }
+          case 'addDamage': {
+            const params = await req.json();
+            if (params.datetime && params.damage) {
+              await connection.queryObject`
+                INSERT INTO nftPersonalDatas (damages) VALUES (ROW(${params.datetime}, ${params.damage}))
+              `;
+              return new Response(`Added damage`, { status: 200 });
+            }
+            return new Response('Insert Value Failed. You may mistake params', {
+              status: 400,
+            });
+          }
+          case 'addSleepLog': {
+            const params = await req.json();
+            if ((params.date, params.duration)) {
+              await connection.queryObject`
+                INSERT INTO nftPersonalDatas (sleeps) VALUE (ROW(${params.date}, ${params.duration}))
+              `;
+              return new Response(`Added sleep log`, { status: 200 });
+            }
+            return new Response('Insert Value Failed. You may mistake params', {
+              status: 400,
+            });
+          }
+          default: {
+            switch (req.method) {
+              case 'GET': {
+                const nftPersonalDatas = await connection.queryObject`
+                  SELECT * FROM nftPersonalDatas
+                `;
+                const body = JSON.stringify(nftPersonalDatas.rows, null, 2);
+                return new Response(body, {
+                  headers: { 'Content-Type': 'application/json' },
+                });
+              }
+              case 'POST': {
+                const params = await req.json();
+                if (params.tokenId) {
+                  await connection.queryObject`
+                    INSERT INTO nftPersonalDatas (tokenId) VALUES (${params.tokenId})
+                  `;
+                  return new Response(`Inserted value ${params.tokenId}`, {
+                    status: 200,
+                  });
+                } else {
+                  return new Response('Insert Value Failed', { status: 500 });
+                }
+              }
+              default: {
+                return new Response('Invalid method', { status: 400 });
+              }
+            }
+          }
+        }
+      }
 
       default: {
         return new Response('not Found', { status: 404 });
