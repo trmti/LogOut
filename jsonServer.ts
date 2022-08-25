@@ -50,6 +50,8 @@ serve(async (req) => {
 
   const params = await req.json();
 
+  console.log(urls);
+
   try {
     switch (urls[1]) {
       case 'metaData': {
