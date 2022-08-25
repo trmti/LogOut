@@ -23,8 +23,8 @@ try {
     CREATE TABLE IF NOT EXISTS nftPersonalDatas (
       id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
       tokenId INT REFERENCES nftMetaDatas(tokenId),
-      level INT NOT NULL,
-      damages INT[][2] NOT NULL)
+      level INT DEFAULT 1,
+      damages INT[][2])
   `;
 } catch (e) {
   console.error(e);
@@ -52,12 +52,6 @@ serve(async (req) => {
           }
           case 'POST': {
             const params = await req.json();
-            console.log(
-              params.name,
-              params.description,
-              params.image,
-              params.HP
-            );
             if (params !== null) {
               await connection.queryObject`
                 INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES (${params.name}, ${params.description}, ${params.image}, ${params.HP})
@@ -70,7 +64,36 @@ serve(async (req) => {
             }
           }
           default: {
-            return new Response('Not Found', { status: 404 });
+            return new Response('Invalid method', { status: 400 });
+          }
+        }
+      }
+      case '/personalData': {
+        switch (req.method) {
+          case 'GET': {
+            const nftPersonalDatas = await connection.queryObject`
+              SELECT * FROM nftPersonalDatas
+            `;
+            const body = JSON.stringify(nftPersonalDatas.rows, null, 2);
+            return new Response(body, {
+              headers: { 'Content-Type': 'application/json' },
+            });
+          }
+          case 'POST': {
+            const params = await req.json();
+            if (params !== null) {
+              await connection.queryObject`
+                INSERT INTO nftPersonalDatas (tokenId) VALUES (${params.tokenId})
+              `;
+              return new Response(`Inserted value ${params.tokenId}`, {
+                status: 200,
+              });
+            } else {
+              return new Response('Insert Value Failed', { status: 500 });
+            }
+          }
+          default: {
+            return new Response('Invalid method', { status: 400 });
           }
         }
       }
