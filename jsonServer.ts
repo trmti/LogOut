@@ -13,7 +13,7 @@ try {
   // Create the table
   await connection.queryObject`
     CREATE TABLE IF NOT EXISTS nftMetaDatas (
-      tokenId SERIAL PRIMARY KEY,
+      tokenId INTEGER PRIMARY KEY AS IDENTITY,
       name TEXT NOT NULL,
       description TEXT NOT NULL,
       image TEXT NOT NULL
@@ -21,10 +21,11 @@ try {
   `;
   await connection.queryObject`
     CREATE TABLE IF NOT EXISTS nftPersonalDatas (
-      id SERIAL PRIMARY KEY,
-      tokenId SERIAL REFERENCES nftMetaDatas(tokenId),
+      id INTEGER PRIMARY KEY AS IDENTITY,
+      tokenId INTEGER REFERENCES nftMetaDatas(tokenId),
       level INTEGER NOT NULL,
-      damages INTEGER[][2] NOT NULL
+      damages INTEGER[][2] NOT NULL,
+      HP FLOAT8 NOT NULL
     )
   `;
 } finally {
@@ -38,23 +39,40 @@ serve(async (req) => {
 
   try {
     switch (url.pathname) {
-      case '/nft': {
-        const nftMetaDatas = await connection.queryObject`
-          SELECT * FROM nftMetaDatas
-        `;
-        const body = JSON.stringify(nftMetaDatas.rows, null, 2);
-        console.log(body);
-        return new Response(body, {
-          headers: { 'Content-Type': 'application/json' },
-        });
+      case '/metaData': {
+        switch (req.method) {
+          case 'GET': {
+            const nftMetaDatas = await connection.queryObject`
+              SELECT * FROM nftMetaDatas
+            `;
+            const body = JSON.stringify(nftMetaDatas.rows, null, 2);
+            return new Response(body, {
+              headers: { 'Content-Type': 'application/json' },
+            });
+          }
+          case 'POST': {
+            const params = await req.json().catch(() => null);
+            if (params !== null) {
+              await connection.queryObject`
+                INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES (${params.name}, ${params.description}, ${params.image}, ${params.HP})
+              `;
+            } else {
+              return new Response('Internal Server Error', { status: 500 });
+            }
+            return new Response('Not Found', { status: 404 });
+          }
+          default: {
+            return new Response('Not Found', { status: 404 });
+          }
+        }
       }
       default: {
         return new Response('not Found', { status: 404 });
       }
     }
   } catch {
-    return new Response('Not Found', {
-      status: 404,
+    return new Response('Internal Server Error', {
+      status: 500,
     });
   } finally {
     connection.release();
