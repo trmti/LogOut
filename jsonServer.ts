@@ -21,20 +21,21 @@ try {
   `;
   await connection.queryObject`
     CREATE TYPE DAMAGE AS (
-      date TIMESTAMP
+      date TIMESTAMP,
       damage INT
-    )
+    );
     CREATE TYPE SLEEP AS (
-      date DATE
+      date DATE,
       duration INT
-    )
+    );
+
     CREATE TABLE IF NOT EXISTS nftPersonalDatas (
       id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
       tokenId INT REFERENCES nftMetaDatas(tokenId),
       level INT DEFAULT 1,
-      damages DAMAGE,
-      sleeps SLEEP
-    )
+      damages DAMAGE[],
+      sleeps SLEEP[]
+    );
   `;
 } catch (e) {
   console.error(e);
