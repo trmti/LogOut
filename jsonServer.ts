@@ -17,6 +17,7 @@ try {
       name TEXT NOT NULL,
       description TEXT NOT NULL,
       image TEXT NOT NULL
+      HP FLOAT8 NOT NULL
     )
   `;
   await connection.queryObject`
@@ -25,7 +26,6 @@ try {
       tokenId INT REFERENCES nftMetaDatas(tokenId),
       level INT NOT NULL,
       damages INT[][2] NOT NULL,
-      HP FLOAT8 NOT NULL
     )
   `;
 } finally {
@@ -56,10 +56,10 @@ serve(async (req) => {
               await connection.queryObject`
                 INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES (${params.name}, ${params.description}, ${params.image}, ${params.HP})
               `;
+              return new Response('success', { status: 200 });
             } else {
               return new Response('Internal Server Error', { status: 500 });
             }
-            return new Response('Not Found', { status: 404 });
           }
           default: {
             return new Response('Not Found', { status: 404 });
