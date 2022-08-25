@@ -50,8 +50,6 @@ serve(async (req) => {
 
   const params = await req.json();
 
-  console.log(urls);
-
   try {
     switch (urls[1]) {
       case 'metaData': {
@@ -123,8 +121,8 @@ serve(async (req) => {
             switch (req.method) {
               case 'GET': {
                 const nftPersonalDatas = await connection.queryObject`
-              SELECT * FROM nftPersonalDatas
-            `;
+                  SELECT * FROM nftPersonalDatas
+                `;
                 const body = JSON.stringify(nftPersonalDatas.rows, null, 2);
                 return new Response(body, {
                   headers: { 'Content-Type': 'application/json' },
@@ -133,8 +131,8 @@ serve(async (req) => {
               case 'POST': {
                 if (params.tokenId) {
                   await connection.queryObject`
-                INSERT INTO nftPersonalDatas (tokenId) VALUES (${params.tokenId})
-              `;
+                    INSERT INTO nftPersonalDatas (tokenId) VALUES (${params.tokenId})
+                  `;
                   return new Response(`Inserted value ${params.tokenId}`, {
                     status: 200,
                   });
