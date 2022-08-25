@@ -16,7 +16,7 @@ try {
       tokenId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
       name TEXT NOT NULL,
       description TEXT NOT NULL,
-      image TEXT NOT NULL
+      image TEXT NOT NULL,
       HP FLOAT8 NOT NULL
     )
   `;
