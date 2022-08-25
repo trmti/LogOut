@@ -48,8 +48,6 @@ serve(async (req) => {
   const urls = url.pathname.split('/');
   const connection = await pool.connect();
 
-  const params = await req.json();
-
   try {
     switch (urls[1]) {
       case 'metaData': {
@@ -64,6 +62,7 @@ serve(async (req) => {
             });
           }
           case 'POST': {
+            const params = await req.json();
             if (
               params.name &&
               params.description &&
