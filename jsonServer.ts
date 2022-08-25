@@ -54,6 +54,7 @@ serve(async (req) => {
           }
           case 'POST': {
             const params = await req.json().catch(() => null);
+            console.log(params);
             if (params !== null) {
               await connection.queryObject`
                 INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES (${params.name}, ${params.description}, ${params.image}, ${params.HP})
