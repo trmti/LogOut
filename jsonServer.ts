@@ -56,7 +56,7 @@ serve(async (req) => {
             console.log(`'${params.name}'`);
             if (params !== null) {
               await connection.queryObject`
-                INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES ('${params.name}', '${params.description}', '${params.image}', ${params.HP})
+                INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES ('test', 'sample text', 'https://localhost:3000', 100)
               `;
               return new Response(`Inserted value ${params.name}`, {
                 status: 200,
