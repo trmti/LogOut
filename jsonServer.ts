@@ -42,8 +42,14 @@ serve(async (req) => {
         const nftMetaDatas = await connection.queryObject`
           SELECT * FROM nftMetaDatas
         `;
-        console.log(nftMetaDatas);
-        return new Response('Not Found', { status: 200 });
+        const body = JSON.stringify(nftMetaDatas.rows, null, 2);
+        console.log(body);
+        return new Response(body, {
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      default: {
+        return new Response('not Found', { status: 404 });
       }
     }
   } catch {
@@ -53,5 +59,4 @@ serve(async (req) => {
   } finally {
     connection.release();
   }
-  return new Response('not Found', { status: 404 });
 });
