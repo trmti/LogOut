@@ -48,10 +48,6 @@ serve(async (req) => {
   const urls = url.pathname.split('/');
   const connection = await pool.connect();
 
-  const params = await req.json();
-
-  console.log(urls);
-
   try {
     switch (urls[1]) {
       case 'metaData': {
@@ -66,17 +62,17 @@ serve(async (req) => {
             });
           }
           case 'POST': {
-            if (params.nam && params.description && params.image && params.HP) {
+            const params = await req.json();
+            if (params !== null) {
               await connection.queryObject`
                 INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES (${params.name}, ${params.description}, ${params.image}, ${params.HP})
               `;
               return new Response(`Inserted value ${params.name}`, {
                 status: 200,
               });
+            } else {
+              return new Response('Insert Value Failed', { status: 500 });
             }
-            return new Response('Insert Value Failed. You may mistake params', {
-              status: 400,
-            });
           }
           default: {
             return new Response('Invalid method', { status: 400 });
@@ -85,67 +81,32 @@ serve(async (req) => {
       }
 
       case 'personalData': {
-        switch (urls[2]) {
-          case 'levelUp': {
-            if (params.level) {
-              await connection.queryObject`
-                UPDATE nftPersonalDatas SET level = level + ${params.level}
-              `;
-              return new Response(`Updated level`, { status: 200 });
-            }
-            return new Response('Insert Value Failed. You may mistake params', {
-              status: 400,
+        console.log(urls[2]);
+        switch (req.method) {
+          case 'GET': {
+            const nftPersonalDatas = await connection.queryObject`
+              SELECT * FROM nftPersonalDatas
+            `;
+            const body = JSON.stringify(nftPersonalDatas.rows, null, 2);
+            return new Response(body, {
+              headers: { 'Content-Type': 'application/json' },
             });
           }
-          case 'addDamage': {
-            if (params.datetime && params.damage) {
+          case 'POST': {
+            const params = await req.json();
+            if (params !== null) {
               await connection.queryObject`
-                INSERT INTO nftPersonalDatas (damages) VALUES (ROW(${params.datetime}, ${params.damage}))
+                INSERT INTO nftPersonalDatas (tokenId) VALUES (${params.tokenId})
               `;
-              return new Response(`Added damage`, { status: 200 });
+              return new Response(`Inserted value ${params.tokenId}`, {
+                status: 200,
+              });
+            } else {
+              return new Response('Insert Value Failed', { status: 500 });
             }
-            return new Response('Insert Value Failed. You may mistake params', {
-              status: 400,
-            });
-          }
-          case 'addSleepLog': {
-            if ((params.date, params.duration)) {
-              await connection.queryObject`
-                INSERT INTO nftPersonalDatas (sleeps) VALUE (ROW(${params.date}, ${params.duration}))
-              `;
-              return new Response(`Added sleep log`, { status: 200 });
-            }
-            return new Response('Insert Value Failed. You may mistake params', {
-              status: 400,
-            });
           }
           default: {
-            switch (req.method) {
-              case 'GET': {
-                const nftPersonalDatas = await connection.queryObject`
-                  SELECT * FROM nftPersonalDatas
-                `;
-                const body = JSON.stringify(nftPersonalDatas.rows, null, 2);
-                return new Response(body, {
-                  headers: { 'Content-Type': 'application/json' },
-                });
-              }
-              case 'POST': {
-                if (params.tokenId) {
-                  await connection.queryObject`
-                    INSERT INTO nftPersonalDatas (tokenId) VALUES (${params.tokenId})
-                  `;
-                  return new Response(`Inserted value ${params.tokenId}`, {
-                    status: 200,
-                  });
-                } else {
-                  return new Response('Insert Value Failed', { status: 500 });
-                }
-              }
-              default: {
-                return new Response('Invalid method', { status: 400 });
-              }
-            }
+            return new Response('Invalid method', { status: 400 });
           }
         }
       }
