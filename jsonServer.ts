@@ -20,11 +20,11 @@ try {
       HP FLOAT NOT NULL)
   `;
   await connection.queryObject`
-    CREATE TYPE DAMAGE AS (
+    CREATE TYPE IF NOT EXISTS DAMAGE AS (
       date TIMESTAMP,
       damage INT
     );
-    CREATE TYPE SLEEP AS (
+    CREATE TYPE IF NOT EXISTS SLEEP AS (
       date DATE,
       duration INT
     );
