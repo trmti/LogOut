@@ -20,11 +20,21 @@ try {
       HP FLOAT NOT NULL)
   `;
   await connection.queryObject`
+    CREATE TYPE damage AS (
+      date TIMESTAMP
+      damage INT
+    )
+    CREATE TYPE sleep AS (
+      date DATE
+      duration INT
+    )
     CREATE TABLE IF NOT EXISTS nftPersonalDatas (
       id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
       tokenId INT REFERENCES nftMetaDatas(tokenId),
       level INT DEFAULT 1,
-      damages INT[][2])
+      damages damage[],
+      sleeps sleep[]
+    )
   `;
 } catch (e) {
   console.error(e);
