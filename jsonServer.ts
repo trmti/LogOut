@@ -13,7 +13,7 @@ try {
   // Create the table
   await connection.queryObject`
     CREATE TABLE IF NOT EXISTS nftMetaDatas (
-      tokenId INTEGER AS IDENTITY PRIMARY KEY,
+      tokenId INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
       name TEXT NOT NULL,
       description TEXT NOT NULL,
       image TEXT NOT NULL
@@ -21,10 +21,10 @@ try {
   `;
   await connection.queryObject`
     CREATE TABLE IF NOT EXISTS nftPersonalDatas (
-      id INTEGER AS IDENTITY PRIMARY KEY,
-      tokenId INTEGER REFERENCES nftMetaDatas(tokenId),
-      level INTEGER NOT NULL,
-      damages INTEGER[][2] NOT NULL,
+      id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+      tokenId INT REFERENCES nftMetaDatas(tokenId),
+      level INT NOT NULL,
+      damages INT[][2] NOT NULL,
       HP FLOAT8 NOT NULL
     )
   `;
