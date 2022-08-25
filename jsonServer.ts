@@ -20,11 +20,11 @@ try {
       HP FLOAT NOT NULL)
   `;
   await connection.queryObject`
-    CREATE TYPE damage AS (
+    CREATE TYPE DAMAGE AS (
       date TIMESTAMP
       damage INT
     )
-    CREATE TYPE sleep AS (
+    CREATE TYPE SLEEP AS (
       date DATE
       duration INT
     )
@@ -32,8 +32,8 @@ try {
       id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
       tokenId INT REFERENCES nftMetaDatas(tokenId),
       level INT DEFAULT 1,
-      damages damage[],
-      sleeps sleep[]
+      damages DAMAGE[],
+      sleeps SLEEP[]
     )
   `;
 } catch (e) {
