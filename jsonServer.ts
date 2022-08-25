@@ -71,6 +71,7 @@ serve(async (req) => {
       }
 
       case 'personalData': {
+        console.log(urls[2]);
         switch (req.method) {
           case 'GET': {
             const nftPersonalDatas = await connection.queryObject`
