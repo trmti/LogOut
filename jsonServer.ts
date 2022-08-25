@@ -63,7 +63,7 @@ serve(async (req) => {
                 status: 200,
               });
             } else {
-              return new Response('Internal Server Error', { status: 500 });
+              return new Response('Insert Value Failed', { status: 500 });
             }
           }
           default: {
