@@ -17,7 +17,7 @@ try {
       name TEXT NOT NULL,
       description TEXT NOT NULL,
       image TEXT NOT NULL,
-      HP FLOAT8 NOT NULL
+      HP FLOAT8 NOT NULL,
     )
   `;
   await connection.queryObject`
