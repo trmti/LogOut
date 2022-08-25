@@ -74,7 +74,8 @@ serve(async (req) => {
         return new Response('not Found', { status: 404 });
       }
     }
-  } catch {
+  } catch (e) {
+    console.error(e);
     return new Response('Internal Server Error', {
       status: 500,
     });
