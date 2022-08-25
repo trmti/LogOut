@@ -64,7 +64,12 @@ serve(async (req) => {
             });
           }
           case 'POST': {
-            if (params.nam && params.description && params.image && params.HP) {
+            if (
+              params.name &&
+              params.description &&
+              params.image &&
+              params.HP
+            ) {
               await connection.queryObject`
                 INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES (${params.name}, ${params.description}, ${params.image}, ${params.HP})
               `;
