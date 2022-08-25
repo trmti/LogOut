@@ -53,12 +53,13 @@ serve(async (req) => {
             });
           }
           case 'POST': {
-            const params = await req.json().catch(() => null);
+            const params = req.body;
             console.log(params);
             if (params !== null) {
-              await connection.queryObject`
-                INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES (${params.name}, ${params.description}, ${params.image}, ${params.HP})
-              `;
+              // await connection.queryObject`
+              //   INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES (${params.name}, ${params.description}, ${params.image}, ${params.HP})
+              // `;
+              // return new Response('success', { status: 200 });
               return new Response('success', { status: 200 });
             } else {
               return new Response('Internal Server Error', { status: 500 });
