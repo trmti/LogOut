@@ -32,8 +32,8 @@ try {
       id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
       tokenId INT REFERENCES nftMetaDatas(tokenId),
       level INT DEFAULT 1,
-      damages DAMAGE[],
-      sleeps SLEEP[]
+      damages DAMAGE,
+      sleeps SLEEP
     )
   `;
 } catch (e) {
