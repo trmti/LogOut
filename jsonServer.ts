@@ -17,16 +17,14 @@ try {
       name TEXT NOT NULL,
       description TEXT NOT NULL,
       image TEXT NOT NULL,
-      HP FLOAT NOT NULL,
-    )
+      HP FLOAT NOT NULL)
   `;
   await connection.queryObject`
     CREATE TABLE IF NOT EXISTS nftPersonalDatas (
       id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
       tokenId INT REFERENCES nftMetaDatas(tokenId),
       level INT NOT NULL,
-      damages INT[][2] NOT NULL,
-    )
+      damages INT[][2] NOT NULL)
   `;
 } catch (e) {
   console.error(e);
@@ -57,7 +55,7 @@ serve(async (req) => {
             console.log(params);
             if (params !== null) {
               await connection.queryObject`
-                INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES (${params.name}, ${params.description}, ${params.image}, ${params.HP})
+                INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES ('${params.name}', '${params.description}', '${params.image}', ${params.HP})
               `;
               return new Response(`Inserted value ${params.name}`, {
                 status: 200,
