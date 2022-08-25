@@ -53,7 +53,7 @@ serve(async (req) => {
             });
           }
           case 'POST': {
-            const params = req.body;
+            const params = await req.json();
             console.log(params);
             if (params !== null) {
               // await connection.queryObject`
