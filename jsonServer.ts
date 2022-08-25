@@ -35,11 +35,12 @@ try {
 
 serve(async (req) => {
   const url = new URL(req.url);
+  const urls = url.pathname.split('/');
   const connection = await pool.connect();
 
   try {
-    switch (url.pathname) {
-      case '/metaData': {
+    switch (urls[1]) {
+      case 'metaData': {
         switch (req.method) {
           case 'GET': {
             const nftMetaDatas = await connection.queryObject`
@@ -68,7 +69,8 @@ serve(async (req) => {
           }
         }
       }
-      case '/personalData': {
+
+      case 'personalData': {
         switch (req.method) {
           case 'GET': {
             const nftPersonalDatas = await connection.queryObject`
@@ -97,6 +99,7 @@ serve(async (req) => {
           }
         }
       }
+
       default: {
         return new Response('not Found', { status: 404 });
       }
