@@ -16,7 +16,7 @@ try {
       tokenId SERIAL PRIMARY KEY,
       name TEXT NOT NULL,
       description TEXT NOT NULL,
-      image TEXT NOT NULL,
+      image TEXT NOT NULL
     )
   `;
   await connection.queryObject`
@@ -24,7 +24,7 @@ try {
       id SERIAL PRIMARY KEY,
       tokenId SERIAL REFERENCES nftMetaDatas(tokenId),
       level INTEGER NOT NULL,
-      damages INTEGER[][2] NOT NULL,
+      damages INTEGER[][2] NOT NULL
     )
   `;
 } finally {
@@ -39,10 +39,11 @@ serve(async (req) => {
   try {
     switch (url.pathname) {
       case '/nft': {
-        const nftMetaDatas = connection.queryObject`
+        const nftMetaDatas = await connection.queryObject`
           SELECT * FROM nftMetaDatas
         `;
-        return new Response(nftMetaDatas, { status: 200 });
+        console.log(nftMetaDatas);
+        return new Response('Not Found', { status: 200 });
       }
     }
   } catch {
