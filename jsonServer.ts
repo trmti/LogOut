@@ -70,9 +70,10 @@ serve(async (req) => {
               params.image &&
               params.HP
             ) {
-              await connection.queryObject`
+              const createdObject = await connection.queryObject`
                 INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES (${params.name}, ${params.description}, ${params.image}, ${params.HP}) RETURNING tokenid
               `;
+              console.log(createdObject.rows);
               return new Response(`Inserted value ${params.name}`, {
                 status: 200,
               });
