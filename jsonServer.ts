@@ -165,7 +165,6 @@ serve(async (req) => {
       }
 
       case 'NFTJsonData': {
-        const params = await req.json();
         const nftPersonalDatas =
           await connection.queryObject`SELECT * FROM nftPersonalDatas`;
         const body = JSON.stringify(nftPersonalDatas.rows, null, 2);
