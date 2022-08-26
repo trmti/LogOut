@@ -199,8 +199,6 @@ serve(async (req) => {
                 await connection.queryObject`SELECT sleeps[${i}].date, sleeps[${i}].duration FROM nftPersonalDatas WHERE id = ${id}`;
               sleeps.push(sleep.rows[0]);
             }
-            console.log(damages, sleeps);
-            await connection.queryObject`SELECT damages FROM nftPersonalDatas WHERE id = ${id}`;
             return new Response(
               JSON.stringify({
                 tokenId: nftMetaDatasJson.tokenid,
@@ -209,6 +207,10 @@ serve(async (req) => {
                 name: nftMetaDatasJson.name,
                 description: nftMetaDatasJson.description,
                 image: nftMetaDatasJson.image,
+                attributes: {
+                  damages: damages,
+                  sleeps: sleeps,
+                },
               }),
               {
                 headers: { 'Content-Type': 'application/json' },
