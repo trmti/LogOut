@@ -177,7 +177,7 @@ serve(async (req) => {
             )[0];
 
             const damages =
-              await connection.queryObject`SELECT damages[1] FROM nftPersonalDatas WHERE id = ${id}`;
+              await connection.queryObject`SELECT damages[1].damage FROM nftPersonalDatas WHERE id = ${id}`;
             console.log(damages.rows);
             return new Response(
               JSON.stringify({
