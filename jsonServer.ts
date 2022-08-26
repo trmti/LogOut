@@ -170,7 +170,7 @@ serve(async (req) => {
             const id = url.searchParams.get('id');
             console.log(id);
             const nftPersonalDatas =
-              await connection.queryObject`SELECT * FROM nftPersonalDatas`;
+              await connection.queryObject`SELECT * FROM nftPersonalDatas WHERE id = ${id}`;
             const body = JSON.stringify(nftPersonalDatas.rows, null, 2);
             return new Response(body, {
               headers: { 'Content-Type': 'application/json' },
