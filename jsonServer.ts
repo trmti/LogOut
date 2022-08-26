@@ -71,7 +71,7 @@ serve(async (req) => {
               params.HP
             ) {
               await connection.queryObject`
-                INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES (${params.name}, ${params.description}, ${params.image}, ${params.HP})
+                INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES (${params.name}, ${params.description}, ${params.image}, ${params.HP}) RETURNING tokenid
               `;
               return new Response(`Inserted value ${params.name}`, {
                 status: 200,
@@ -103,7 +103,7 @@ serve(async (req) => {
           }
           case 'addDamage': {
             const params = await req.json();
-            const query = `UPDATE nftPersonalDatas set damages = damages || '{"(${params.datetime},${params.damage})"}' WHERE id = ${params.id} RETURNING id`;
+            const query = `UPDATE nftPersonalDatas set damages = damages || '{"(${params.datetime},${params.damage})"}' WHERE id = ${params.id}`;
             if (params.datetime && params.damage && params.id) {
               await connection.queryObject(query);
               return new Response(`Added damage`, { status: 200 });
@@ -144,7 +144,7 @@ serve(async (req) => {
                 const params = await req.json();
                 if (params.tokenId && params.tokenOwnerAddress) {
                   const createdObject = await connection.queryObject`
-                    INSERT INTO nftPersonalDatas (tokenId, tokenOwnerAddress) VALUES (${params.tokenId}, ${params.tokenOwnerAddress})
+                    INSERT INTO nftPersonalDatas (tokenId, tokenOwnerAddress) VALUES (${params.tokenId}, ${params.tokenOwnerAddress}) RETURNING id
                   `;
                   console.log(createdObject.rows);
                   return new Response('{test: "sample"}', {
