@@ -191,7 +191,7 @@ serve(async (req) => {
             )[0];
             for (let i = 1; i < damageLengthJson.array_length + 1; i++) {
               const damage =
-                await connection.queryObject`SELECT damages[${i}].datetime, damages[${i}].damage FROM nftPersonalDatas WHERE id = ${id}`;
+                await connection.queryObject`SELECT damages[${i}].date, damages[${i}].damage FROM nftPersonalDatas WHERE id = ${id}`;
               damages.push(damage.rows[0]);
             }
             for (let i = 1; i < sleepLengthJson.array_length + 1; i++) {
