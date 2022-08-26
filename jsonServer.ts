@@ -171,15 +171,17 @@ serve(async (req) => {
             console.log(id);
             const nftPersonalDatas =
               await connection.queryObject`SELECT * FROM nftPersonalDatas WHERE id = ${id}`;
-            const nftMetaDatas =
-              await connection.queryObject`SELECT * FROM nftMetaDatas WHERE id = ${nftPersonalDatas[0].tokenId}`;
-            console.log(nftMetaDatas);
-            const nftPersonalDatasJson = JSON.stringify(
+            const nftPersonalDatasString = JSON.stringify(
               nftPersonalDatas.rows,
               null,
               2
             );
-            return new Response(nftPersonalDatasJson, {
+            const nftMetaDatas =
+              await connection.queryObject`SELECT * FROM nftMetaDatas WHERE id = ${
+                JSON.parse(nftPersonalDatasString)[0].tokenId
+              }`;
+            console.log(nftMetaDatas);
+            return new Response(nftPersonalDatasString, {
               headers: { 'Content-Type': 'application/json' },
             });
           }
