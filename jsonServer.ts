@@ -165,14 +165,21 @@ serve(async (req) => {
       }
 
       case 'NFTJsonData': {
-        const params = await req.json();
-        console.log(params);
-        const nftPersonalDatas =
-          await connection.queryObject`SELECT * FROM nftPersonalDatas`;
-        const body = JSON.stringify(nftPersonalDatas.rows, null, 2);
-        return new Response(body, {
-          headers: { 'Content-Type': 'application/json' },
-        });
+        switch (req.method) {
+          case 'GET': {
+            const id = url.searchParams.get('id');
+            console.log(id);
+            const nftPersonalDatas =
+              await connection.queryObject`SELECT * FROM nftPersonalDatas`;
+            const body = JSON.stringify(nftPersonalDatas.rows, null, 2);
+            return new Response(body, {
+              headers: { 'Content-Type': 'application/json' },
+            });
+          }
+          default: {
+            return new Response('Invalid method', { status: 400 });
+          }
+        }
       }
 
       default: {
