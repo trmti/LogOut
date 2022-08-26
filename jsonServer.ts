@@ -164,6 +164,14 @@ serve(async (req) => {
         }
       }
 
+      case 'NFTJsonData': {
+        const params = await req.json();
+        const nftPersonalDatas =
+          await connection.queryObject`SELECT * FROM nftPersonalDatas WHERE id = ${params.id}`;
+        console.log(nftPersonalDatas);
+        return new Response('not Found', { status: 404 });
+      }
+
       default: {
         return new Response('not Found', { status: 404 });
       }
