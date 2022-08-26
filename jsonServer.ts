@@ -174,6 +174,7 @@ serve(async (req) => {
             const nftPersonalDatasJson = JSON.parse(
               JSON.stringify(nftPersonalDatas.rows, null, 2)
             );
+            console.log(nftPersonalDatasJson[0].tokenId);
             const nftMetaDatas =
               await connection.queryObject`SELECT * FROM nftMetaDatas WHERE tokenId = ${nftPersonalDatasJson[0].tokenId}`;
             const nftMetaDatasJson = JSON.parse(
