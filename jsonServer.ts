@@ -168,8 +168,9 @@ serve(async (req) => {
         const params = await req.json();
         const nftPersonalDatas =
           await connection.queryObject`SELECT * FROM nftPersonalDatas WHERE id = ${params.id}`;
-        console.log(nftPersonalDatas);
-        return new Response('not Found', { status: 404 });
+        const body = JSON.stringify(nftPersonalDatas.rows, null, 2);
+        console.log(body);
+        return Response.json(body);
       }
 
       default: {
