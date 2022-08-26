@@ -210,9 +210,9 @@ serve(async (req) => {
                 attributes: {
                   level: nftPersonalDatasJson.level,
                   HP: nftMetaDatasJson.hp,
-                  damages: damages,
-                  sleeps: sleeps,
                 },
+                damages: damages,
+                sleeps: sleeps,
               }),
               {
                 headers: { 'Content-Type': 'application/json' },
