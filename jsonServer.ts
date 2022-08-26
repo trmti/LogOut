@@ -167,10 +167,14 @@ serve(async (req) => {
             const id = url.searchParams.get('id');
             const nftPersonalDatas =
               await connection.queryObject`SELECT * FROM nftPersonalDatas WHERE id = ${id}`;
-            const nftPersonalDatasJson = nftPersonalDatas.rows[0];
+            const nftPersonalDatasJson = JSON.parse(
+              JSON.stringify(nftPersonalDatas.rows, null, 2)
+            )[0];
             const nftMetaDatas =
               await connection.queryObject`SELECT * FROM nftMetaDatas WHERE tokenId = ${nftPersonalDatasJson.tokenid}`;
-            const nftMetaDatasJson = nftMetaDatas.rows;
+            const nftMetaDatasJson = JSON.parse(
+              JSON.stringify(nftMetaDatas.rows, null, 2)
+            )[0];
 
             const damages =
               await connection.queryObject`SELECT damages FROM nftPersonalDatas WHERE id = ${id}`;
