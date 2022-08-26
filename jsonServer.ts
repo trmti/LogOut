@@ -73,9 +73,12 @@ serve(async (req) => {
               const createdObject = await connection.queryObject`
                 INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES (${params.name}, ${params.description}, ${params.image}, ${params.HP}) RETURNING tokenid
               `;
-              console.log(createdObject.rows);
-              return new Response(`Inserted value ${params.name}`, {
-                status: 200,
+              const createdObjectJson = JSON.parse(
+                JSON.stringify(createdObject.rows, null, 2)
+              )[0];
+              console.log(createdObjectJson.rows);
+              return new Response(`{tokenid: ${createdObjectJson.tokenid}}`, {
+                headers: { 'Content-Type': 'application/json' },
               });
             }
             return new Response('Insert Value Failed. You may mistake params', {
@@ -147,10 +150,16 @@ serve(async (req) => {
                   const createdObject = await connection.queryObject`
                     INSERT INTO nftPersonalDatas (tokenId, tokenOwnerAddress) VALUES (${params.tokenId}, ${params.tokenOwnerAddress}) RETURNING id
                   `;
-                  console.log(createdObject.rows);
-                  return new Response('{test: "sample"}', {
-                    headers: { 'Content-Type': 'application/json' },
-                  });
+                  const createdObjectJson = JSON.parse(
+                    JSON.stringify(createdObject.rows, null, 2)
+                  )[0];
+                  console.log(createdObjectJson.rows);
+                  return new Response(
+                    `{tokenid: ${createdObjectJson.tokenid}}`,
+                    {
+                      headers: { 'Content-Type': 'application/json' },
+                    }
+                  );
                 } else {
                   return new Response('Insert Value Failed', { status: 500 });
                 }
