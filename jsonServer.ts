@@ -120,6 +120,7 @@ serve(async (req) => {
             const params = await req.json();
             const query = `UPDATE nftPersonalDatas set sleeps = sleeps || '{"(${params.date},${params.dureation})"}' WHERE id = ${params.id} `;
             if (params.date && params.duration && params.id) {
+              console.log(params);
               await connection.queryObject(query);
               return new Response(`Added sleep log`, { status: 200 });
             }
