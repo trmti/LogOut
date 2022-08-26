@@ -176,6 +176,7 @@ serve(async (req) => {
               JSON.stringify(nftMetaDatas.rows, null, 2)
             )[0];
 
+            // TODO: SQL文が何度もデータベースにアクセスするため効率が悪い。最適化する。
             const damages = [];
             const sleeps = [];
             const damageLength =
