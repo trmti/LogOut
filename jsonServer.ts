@@ -202,12 +202,12 @@ serve(async (req) => {
             return new Response(
               JSON.stringify({
                 tokenId: nftMetaDatasJson.tokenid,
-                level: nftPersonalDatasJson.level,
-                HP: nftMetaDatasJson.hp,
                 name: nftMetaDatasJson.name,
                 description: nftMetaDatasJson.description,
                 image: nftMetaDatasJson.image,
                 attributes: {
+                  level: nftPersonalDatasJson.level,
+                  HP: nftMetaDatasJson.hp,
                   damages: damages,
                   sleeps: sleeps,
                 },
