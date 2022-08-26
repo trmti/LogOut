@@ -176,9 +176,11 @@ serve(async (req) => {
               JSON.stringify(nftMetaDatas.rows, null, 2)
             )[0];
 
-            const damages =
-              await connection.queryObject`SELECT damages FROM nftPersonalDatas WHERE id = ${id}`;
-            console.log(damages.rows);
+            let damages = [];
+            const damageLength =
+              await connection.queryObject`array_length(SELECT damages FROM nftPersonalDatas WHERE id=${id})`;
+            console.log(damageLength);
+            await connection.queryObject`SELECT damages FROM nftPersonalDatas WHERE id = ${id}`;
             return new Response(
               JSON.stringify({
                 tokenId: nftMetaDatasJson.tokenid,
