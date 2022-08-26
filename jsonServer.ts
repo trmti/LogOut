@@ -171,19 +171,20 @@ serve(async (req) => {
             console.log(id);
             const nftPersonalDatas =
               await connection.queryObject`SELECT * FROM nftPersonalDatas WHERE id = ${id}`;
-            const nftPersonalDatasString = JSON.stringify(
-              nftPersonalDatas.rows,
-              null,
-              2
+            const nftPersonalDatasJson = JSON.parse(
+              JSON.stringify(nftPersonalDatas.rows, null, 2)
             );
             const nftMetaDatas =
-              await connection.queryObject`SELECT * FROM nftMetaDatas WHERE tokenId = ${
-                JSON.parse(nftPersonalDatasString)[0].tokenId
-              }`;
-            console.log(nftMetaDatas);
-            return new Response(nftPersonalDatasString, {
-              headers: { 'Content-Type': 'application/json' },
-            });
+              await connection.queryObject`SELECT * FROM nftMetaDatas WHERE tokenId = ${nftPersonalDatasJson[0].tokenId}`;
+            const nftMetaDatasJson = JSON.parse(
+              JSON.stringify(nftMetaDatas.rows, null, 2)
+            );
+            return new Response(
+              JSON.stringify(nftPersonalDatasJson, nftMetaDatasJson),
+              {
+                headers: { 'Content-Type': 'application/json' },
+              }
+            );
           }
           default: {
             return new Response('Invalid method', { status: 400 });
