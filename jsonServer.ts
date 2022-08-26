@@ -170,7 +170,9 @@ serve(async (req) => {
           await connection.queryObject`SELECT * FROM nftPersonalDatas WHERE id = ${params.id}`;
         const body = JSON.stringify(nftPersonalDatas.rows, null, 2);
         console.log(body);
-        return Response.json(body);
+        return new Response(body, {
+          headers: { 'Content-Type': 'application/json' },
+        });
       }
 
       default: {
