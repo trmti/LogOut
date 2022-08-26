@@ -176,7 +176,7 @@ serve(async (req) => {
             const nftMetaDatasJson = JSON.parse(
               JSON.stringify(nftMetaDatas.rows, null, 2)
             );
-            return new Response(JSON.stringify(nftMetaDatasJson), {
+            return new Response(JSON.stringify(nftMetaDatasJson[0]), {
               headers: { 'Content-Type': 'application/json' },
             });
           }
