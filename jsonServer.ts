@@ -105,11 +105,11 @@ serve(async (req) => {
           case 'addDamage': {
             const params = await req.json();
             console.log(
-              `UPDATE nftPersonalDatas set damages = damages || '{"(${params.datetime}, ${params.damage})"}' WHERE id = ${params.id}`
+              `UPDATE nftPersonalDatas set damages = damages || '{"(${params.datetime},${params.damage})"}' WHERE id = ${params.id}`
             );
             if (params.datetime && params.damage && params.id) {
               await connection.queryObject`
-                UPDATE nftPersonalDatas set damages = damages || '{"(${params.datetime},${params.damage})"}' WHERE id = ${params.id}
+                UPDATE nftPersonalDatas set damages = damages || '{"(1999-01-08 04:05:06,${params.damage})"}' WHERE id = ${params.id}
               `;
               return new Response(`Added damage`, { status: 200 });
             }
