@@ -88,7 +88,6 @@ serve(async (req) => {
       }
 
       case 'personalData': {
-        console.log(urls[2]);
         switch (urls[2]) {
           case 'levelUp': {
             const params = await req.json();
@@ -119,9 +118,7 @@ serve(async (req) => {
           case 'addSleepLog': {
             const params = await req.json();
             const query = `UPDATE nftPersonalDatas set sleeps = sleeps || '{"(${params.date},${params.duration})"}' WHERE id = ${params.id}`;
-            console.log(query);
             if (params.date && params.duration && params.id) {
-              console.log(params);
               await connection.queryObject(query);
               return new Response(`Added sleep log`, { status: 200 });
             }
@@ -168,15 +165,14 @@ serve(async (req) => {
         switch (req.method) {
           case 'GET': {
             const id = url.searchParams.get('id');
-            console.log(id);
             const nftPersonalDatas =
               await connection.queryObject`SELECT * FROM nftPersonalDatas WHERE id = ${id}`;
             const nftPersonalDatasJson = JSON.parse(
               JSON.stringify(nftPersonalDatas.rows, null, 2)
             );
-            console.log(nftPersonalDatasJson[0].tokenId);
+            console.log(nftPersonalDatasJson);
             const nftMetaDatas =
-              await connection.queryObject`SELECT * FROM nftMetaDatas WHERE tokenId = ${nftPersonalDatasJson[0].tokenId}`;
+              await connection.queryObject`SELECT * FROM nftMetaDatas WHERE tokenId = ${nftPersonalDatasJson[0].tokenid}`;
             const nftMetaDatasJson = JSON.parse(
               JSON.stringify(nftMetaDatas.rows, null, 2)
             );
