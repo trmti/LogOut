@@ -104,6 +104,7 @@ serve(async (req) => {
           }
           case 'addDamage': {
             const params = await req.json();
+            console.log(params);
             if (params.datetime && params.damage && params.id) {
               await connection.queryObject`
                 UPDATE nftPersonalDatas set damages = damages || '{"(${params.datetime}, ${params.damage})"}' WHERE id = ${params.id}
