@@ -179,12 +179,9 @@ serve(async (req) => {
             const nftMetaDatasJson = JSON.parse(
               JSON.stringify(nftMetaDatas.rows, null, 2)
             );
-            return new Response(
-              JSON.stringify(nftPersonalDatasJson, nftMetaDatasJson),
-              {
-                headers: { 'Content-Type': 'application/json' },
-              }
-            );
+            return new Response(JSON.stringify(nftMetaDatasJson), {
+              headers: { 'Content-Type': 'application/json' },
+            });
           }
           default: {
             return new Response('Invalid method', { status: 400 });
