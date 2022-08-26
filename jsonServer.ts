@@ -192,12 +192,12 @@ serve(async (req) => {
             for (let i = 1; i < damageLengthJson.array_length + 1; i++) {
               const damage =
                 await connection.queryObject`SELECT damages[${i}] FROM nftPersonalDatas WHERE id = ${id}`;
-              damages.push(damage.rows);
+              damages.push(damage.rows[0]);
             }
             for (let i = 1; i < sleepLengthJson.array_length + 1; i++) {
               const sleep =
                 await connection.queryObject`SELECT sleeps[${i}] FROM nftPersonalDatas WHERE id = ${id}`;
-              sleeps.push(sleep.rows);
+              sleeps.push(sleep.rows[0]);
             }
             console.log(damages, sleeps);
             await connection.queryObject`SELECT damages FROM nftPersonalDatas WHERE id = ${id}`;
