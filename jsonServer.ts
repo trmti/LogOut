@@ -109,13 +109,16 @@ serve(async (req) => {
             );
             if (params.datetime && params.damage && params.id) {
               await connection.queryObject`
-                UPDATE nftPersonalDatas set damages = damages || '{"(${params.datetime},10)"}' WHERE id = ${params.id}
+                UPDATE nftPersonalDatas set damages = damages || '{"(1999-01-08 04:05:06,10)"}' WHERE id = ${params.id}
               `;
               return new Response(`Added damage`, { status: 200 });
             }
-            return new Response('Insert Value Failed. You may mistake params', {
-              status: 400,
-            });
+            return new Response(
+              'Insert Value Failed. You may added valid params',
+              {
+                status: 400,
+              }
+            );
           }
           case 'addSleepLog': {
             const params = await req.json();
@@ -125,9 +128,12 @@ serve(async (req) => {
               `;
               return new Response(`Added sleep log`, { status: 200 });
             }
-            return new Response('Insert Value Failed. You may mistake params', {
-              status: 400,
-            });
+            return new Response(
+              'Insert Value Failed. You may added valid params',
+              {
+                status: 400,
+              }
+            );
           }
           default: {
             switch (req.method) {
