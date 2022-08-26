@@ -118,7 +118,7 @@ serve(async (req) => {
           }
           case 'addSleepLog': {
             const params = await req.json();
-            const query = `UPDATE nftPersonalDatas set sleeps = sleeps || '{"(${params.date},${params.dureation})"}' WHERE id = ${params.id}`;
+            const query = `UPDATE nftPersonalDatas set sleeps = sleeps || '{"(${params.date},${params.duration})"}' WHERE id = ${params.id}`;
             console.log(query);
             if (params.date && params.duration && params.id) {
               console.log(params);
