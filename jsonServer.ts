@@ -109,7 +109,7 @@ serve(async (req) => {
             );
             if (params.datetime && params.damage && params.id) {
               await connection.queryObject`
-                UPDATE nftPersonalDatas set damages = damages || '{"(\\1999-01-08 04:05:06,\\${params.damage})"}' WHERE id = ${params.id}
+                UPDATE nftPersonalDatas set damages = damages || '{"(1999-01-08 04:05:06,10)"}' WHERE id = ${params.id}
               `;
               return new Response(`Added damage`, { status: 200 });
             }
