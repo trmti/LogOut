@@ -235,6 +235,7 @@ serve(async (req) => {
       status: 500,
     });
   } finally {
+    // release connection
     connection.release();
   }
 });
