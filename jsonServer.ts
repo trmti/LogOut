@@ -143,11 +143,12 @@ serve(async (req) => {
               case 'POST': {
                 const params = await req.json();
                 if (params.tokenId && params.tokenOwnerAddress) {
-                  await connection.queryObject`
+                  const createdObject = await connection.queryObject`
                     INSERT INTO nftPersonalDatas (tokenId, tokenOwnerAddress) VALUES (${params.tokenId}, ${params.tokenOwnerAddress})
                   `;
-                  return new Response(`Inserted value ${params.tokenId}`, {
-                    status: 200,
+                  console.log(createdObject.rows);
+                  return new Response('{test: "sample"}', {
+                    headers: { 'Content-Type': 'application/json' },
                   });
                 } else {
                   return new Response('Insert Value Failed', { status: 500 });
