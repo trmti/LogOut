@@ -81,6 +81,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
               if (sleepLog.length !== 0) {
                 latestDate = new Date(sleepLog[sleepLog.length - 1].date.split(".")[0])
               } else {
+                console.log("sleep log is not found")
                 latestDate = new Date("2003-12-21T00:00:00")
               }
               if (
@@ -107,7 +108,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                   }
                 }
                 const body = JSON.stringify(
-                  {personalId, sleepDuration: (durations/6 + params.sleepDuration)/2}
+                  {personalId, sleepDuration: ~~((durations/6 + params.sleepDuration)/2)}
                 )
                 const res = await fetch(`${JSON_SERVER_URL}/calculateMintVol`, {
                   method: "POST",
@@ -120,7 +121,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                 const mintToAddress = await BoostNFTContract.methods.ownerOf(params.tokenId).call();
                 console.log("mint Amount", mintAmount)
                 console.log("mint address", mintToAddress)
-                await GoodNightContract.methods.mint(mintToAddress, ~~(mintAmount * 10 ** 8)).send({from: account.address, gas: 1000000, gasPrice: "8000000000"})
+                // await GoodNightContract.methods.mint(mintToAddress, ~~(mintAmount * 10 ** 8)).send({from: account.address, gas: 1000000, gasPrice: "8000000000"})
 
                 await fetch(`${JSON_SERVER_URL}/personalData/addSleepLog`, {
                     method: "POST",
