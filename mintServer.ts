@@ -125,7 +125,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                 await fetch(`${JSON_SERVER_URL}/personalData/addSleepLog`, {
                     method: "POST",
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({id: params.nftId, duration: params.sleepDuration, date: formatedDate})
+                    body: JSON.stringify({id: personalId, duration: params.sleepDuration, date: formatedDate})
                   })
                 console.log("mint Successfully!!")
                 return new Response("mint Successfully!!", {status: 200})
