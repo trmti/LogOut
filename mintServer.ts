@@ -14,7 +14,7 @@ const JSON_SERVER_URL = Deno.env.get("JSON_SERVER_URL")
 let web3;
 
 if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS && JSON_SERVER_URL) {
-    web3 = new Web3(
+  web3 = new Web3(
     PROVIDER_URL
   );
   const account = web3.eth.accounts.privateKeyToAccount(MINTER_PRIVATE_KEY);
