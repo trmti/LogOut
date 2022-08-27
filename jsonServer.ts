@@ -1,5 +1,6 @@
 import { serve } from 'https://deno.land/std@0.114.0/http/server.ts';
 import * as postgres from 'https://deno.land/x/postgres@v0.14.2/mod.ts';
+import { mintVol } from './mintVolConfig.ts';
 
 // Get the connection string from the environment variable "DATABASE_URL"
 const databaseUrl = Deno.env.get('DATABASE_URL')!;
@@ -223,6 +224,32 @@ serve(async (req) => {
             return new Response('Invalid method', { status: 400 });
           }
         }
+      }
+
+      case 'calculateMintVol': {
+        const params = await req.json();
+        if ((params.personalId, params.sleepDuration)) {
+          if (params.sleepDuration > 12) {
+            return new Response('sleepDuration is invalid', { status: 400 });
+          }
+          const level =
+            await connection.queryObject`SELECT level FROM nftPersonalDatas WHERE id = ${params.personalId}`;
+          const levelJson = JSON.parse(JSON.stringify(level.rows, null, 2))[0];
+          const x =
+            mintVol[~~(params.sleepDuration / 2)][
+              ~~((levelJson.level - 1) / 5)
+            ] / 96;
+          const gamma = (1 / 362880) * x ** 9 * Math.E ** x;
+          return new Response(
+            JSON.stringify({
+              vol: gamma,
+            }),
+            { headers: { 'Content-Type': 'application/json' } }
+          );
+        }
+        return new Response('Insert Value Failed. You may added valid params', {
+          status: 400,
+        });
       }
 
       default: {

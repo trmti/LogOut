@@ -9,10 +9,11 @@ const MINTER_PRIVATE_KEY = Deno.env.get("MINTER_PRIVATE_KEY");
 const GNTOKEN_ADDRESS = Deno.env.get("GNTOKEN_ADDRESS")
 const PROVIDER_URL = Deno.env.get("PROVIDER_URL")
 const BOOSTTOKEN_ADDRESS = Deno.env.get("BOOSTTOKEN_ADDRESS")
+const JSON_SERVER_URL = Deno.env.get("JSON_SERVER_URL")
 
 let web3;
 
-if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS) {
+if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS && JSON_SERVER_URL) {
     web3 = new Web3(
     PROVIDER_URL
   );
@@ -25,20 +26,35 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS)
 
   serve(async (req) => {
     const url = new URL(req.url);
-    const urls = url.pathname.split("/");
     
     try {
-      switch(urls[1]) {
-        case "mintNFT": {
+      switch(url.pathname) {
+        case "/mintNFT": {
           const params = await req.json();
-          if (params.toAddress && params.personalId) {
-            // Create meta data
-            // deno-lint-ignore no-explicit-any
-            BoostNFTContract.methods.safeMint.send(params.toAddress, params.personalId).then((res:any) => {console.log(res)});
-            return new Response("mint Successfully!!", {status: 200})
+          if (params.toAddress && params.tokenId) {
+            try {
+              const body =
+                {
+                  "tokenId": params.tokenId,
+                  "tokenOwnerAddress": params.toAddress
+                }
+              const resp = await fetch(`${JSON_SERVER_URL}/personalData`, {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+              })
+              const respJson = await resp.json();
+              await BoostNFTContract.methods.safeMint(params.toAddress, respJson[0].id).send({from: account.address, gas: 1000000, gasPrice: "8000000000"})
+              return new Response("create nft successfully!!", {status: 200})
+            } catch(e) {
+              console.error(e);
+              return new Response("create nft failed", {status: 400})
+            }
           } else {
             return new Response(
-              'Insert Value Failed. You may added valid params',
+              'Insert Value Failed. You may added invalid params',
               {
                 status: 400,
               }
@@ -46,18 +62,15 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS)
           }
         }
 
-        case "mintToken": {
+        case "/mintToken": {
           const params = await req.json();
           if (params.toAddress && params.amount) {
-            // deno-lint-ignore no-explicit-any
-            GoodNightContract.methods.mint.send(params.toAddress, params.amount).then((res:any) => {console.log(res)})
+            await GoodNightContract.methods.mint(params.toAddress, params.amount).send({from: account.address, gas: 1000000, gasPrice: "8000000000"})
             return new Response("mint Successfully!!", {status: 200})
           } else {
             return new Response(
-              'Insert Value Failed. You may added valid params',
-              {
-                status: 400,
-              }
+              'Insert Value Failed. You may added invalid params',
+              { status: 400 }
             )
           }
         }
