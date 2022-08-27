@@ -70,7 +70,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
             try {
               const now = Date.now();
               const nowDate = new Date(now);
-              const formatedDate = nowDate.getFullYear() + '-' + nowDate.getMonth() + '-' + nowDate.getDate() + '-';
+              const formatedDate = nowDate.getFullYear() + '-' + (nowDate.getMonth()+1) + '-' + nowDate.getDate() + '-';
               const personalId = await BoostNFTContract.methods.getPersonalId(params.tokenId).call({from: account.address});
               const nftMetaData = await (await fetch(`${JSON_SERVER_URL}/NFTJsonData?id=${personalId}`, {
                 method: "GET"
@@ -121,7 +121,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                 const mintToAddress = await BoostNFTContract.methods.ownerOf(params.tokenId).call();
                 console.log("mint Amount", mintAmount)
                 console.log("mint address", mintToAddress)
-                // await GoodNightContract.methods.mint(mintToAddress, ~~(mintAmount * 10 ** 8)).send({from: account.address, gas: 1000000, gasPrice: "8000000000"})
+                await GoodNightContract.methods.mint(mintToAddress, ~~(mintAmount * 10 ** 8)).send({from: account.address, gas: 1000000, gasPrice: "8000000000"})
 
                 await fetch(`${JSON_SERVER_URL}/personalData/addSleepLog`, {
                     method: "POST",
