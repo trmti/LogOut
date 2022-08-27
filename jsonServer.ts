@@ -236,8 +236,7 @@ serve(async (req) => {
             await connection.queryObject`SELECT level FROM nftPersonalDatas WHERE id = ${params.personalId}`;
           const levelJson = JSON.parse(JSON.stringify(level.rows, null, 2))[0];
           const x =
-            mintVol[~~params.sleepDuration - 1][~~((levelJson.level - 1) / 5)] /
-            96;
+            mintVol[~~params.sleepDuration - 1][~~((levelJson.level - 1) / 5)];
           const gamma = (1 / 362880) * x ** 9 * Math.E ** x;
           return new Response(
             JSON.stringify({
