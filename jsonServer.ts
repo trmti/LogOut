@@ -238,7 +238,7 @@ serve(async (req) => {
           const x =
             mintVol[~~(params.sleepDuration / 2)][
               ~~((levelJson.level - 1) / 5)
-            ] / 96;
+            ];
           console.log(x);
           const gamma = (1 / 362880) * x ** 9 * Math.E ** x;
           return new Response(
