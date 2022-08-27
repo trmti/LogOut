@@ -47,6 +47,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
               })
               const respJson = await resp.json();
               await BoostNFTContract.methods.safeMint(params.toAddress, respJson[0].id).send({from: account.address, gas: 1000000, gasPrice: "8000000000"})
+              console.log("create nft successfully!!")
               return new Response("create nft successfully!!", {status: 200})
             } catch(e) {
               console.error(e);
@@ -119,13 +120,15 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                 const mintToAddress = await BoostNFTContract.methods.ownerOf(params.tokenId).call();
                 console.log("mint Amount", mintAmount)
                 console.log("mint address", mintToAddress)
+                await GoodNightContract.methods.mint(mintToAddress, ~~(mintAmount * 10 ** 8)).send({from: account.address, gas: 1000000, gasPrice: "8000000000"})
 
-                // await fetch(`${JSON_SERVER_URL}/personalData/addSleepLog`, {
-                //     method: "POST",
-                //     headers: {'Content-Type': 'application/json'},
-                //     body: JSON.stringify({id: params.nftId, duration: params.sleepDuration, date: formatedDate})
-                //   })
-                  return new Response("mint Successfully!!", {status: 200})
+                await fetch(`${JSON_SERVER_URL}/personalData/addSleepLog`, {
+                    method: "POST",
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({id: params.nftId, duration: params.sleepDuration, date: formatedDate})
+                  })
+                console.log("mint Successfully!!")
+                return new Response("mint Successfully!!", {status: 200})
                 }
                 else {
                   return new Response("You already inserted sleepLog", {status: 400})
