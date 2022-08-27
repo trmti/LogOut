@@ -5,7 +5,7 @@ import { AbiItem } from "https://deno.land/x/web3@v0.11.0/packages/web3-utils/ty
 import GoodNightABI from "./GoodNightToken.json" assert { type: "json" }
 import BoostNFTABI from "./BoostNFT.json" assert { type: "json" }
 
-const {MINTER_PRIVATE_KEY, GNTOKEN_ADDRESS, PROVIDER_URL, BOOSTTOKEN_ADDRESS, JSON_SERVER_URL} = config();
+const {MINTER_PRIVATE_KEY, GNTOKEN_ADDRESS, PROVIDER_URL, BOOSTTOKEN_ADDRESS} = config();
 
 
 const web3 = new Web3(
@@ -15,6 +15,10 @@ if (web3) {
   const account = web3.eth.accounts.privateKeyToAccount(MINTER_PRIVATE_KEY);
   const GoodNightContract = new web3.eth.Contract(GoodNightABI as AbiItem[], GNTOKEN_ADDRESS);
   const BoostNFTContract = new web3.eth.Contract(BoostNFTABI as AbiItem[], BOOSTTOKEN_ADDRESS);
+  web3.eth.accounts.wallet.add(account);
+  web3.eth.defaultAccount = account.address;
+  console.log("server runninng")
+
   serve(async (req) => {
     const url = new URL(req.url);
     const urls = url.pathname.split("/");
@@ -27,7 +31,7 @@ if (web3) {
             // Create meta data
             // deno-lint-ignore no-explicit-any
             BoostNFTContract.methods.safeMint.send(params.toAddress, params.personalId).then((res:any) => {console.log(res)});
-            return new Response("test")
+            return new Response("mint Successfully!!", {status: 200})
           } else {
             return new Response(
               'Insert Value Failed. You may added valid params',
@@ -43,7 +47,7 @@ if (web3) {
           if (params.toAddress && params.amount) {
             // deno-lint-ignore no-explicit-any
             GoodNightContract.methods.mint.send(params.toAddress, params.amount).then((res:any) => {console.log(res)})
-            return new Response("test")
+            return new Response("mint Successfully!!", {status: 200})
           } else {
             return new Response(
               'Insert Value Failed. You may added valid params',
