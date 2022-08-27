@@ -31,7 +31,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
       switch(url.pathname) {
         case "/mintNFT": {
           const params = await req.json();
-          if (params.toAddress && params.tokenId) {
+          if (params.toAddress && params.tokenId !== undefined) {
             try {
               const body =
                 {
@@ -64,18 +64,24 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
 
         case "/mintToken": {
           const params = await req.json();
-          if (params.id && params.nftId && params.sleepDuration) {
+          console.log(params)
+          if (params.tokenId !== undefined && params.sleepDuration) {
             try {
               const now = Date.now();
               const nowDate = new Date(now);
               const formatedDate = nowDate.getFullYear() + '-' + nowDate.getMonth() + '-' + nowDate.getDate() + '-';
-
-              const nftMetaData = await (await fetch(`${JSON_SERVER_URL}/NFTJsonData?id=${params.id}`, {
+              const personalId = await BoostNFTContract.methods.getPersonalId(params.tokenId).call({from: account.address});
+              const nftMetaData = await (await fetch(`${JSON_SERVER_URL}/NFTJsonData?id=${personalId}`, {
                 method: "GET"
               })).json();
               const sleepLog = nftMetaData.sleeps;
               console.log(sleepLog);
-              const latestDate = new Date(sleepLog[sleepLog.length - 1].date.split(".")[0])
+              let latestDate;
+              if (sleepLog.length !== 0) {
+                latestDate = new Date(sleepLog[sleepLog.length - 1].date.split(".")[0])
+              } else {
+                latestDate = new Date("2003-12-21T00:00:00")
+              }
               if (
                 sleepLog.length == 0 ||
                 latestDate.getFullYear() < nowDate.getFullYear() ||
@@ -99,16 +105,21 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                     durations += Number(sleepLog[i].duration)
                   }
                 }
+                const body = JSON.stringify(
+                  {personalId, sleepDuration: (durations/6 + params.sleepDuration)/2}
+                )
                 const res = await fetch(`${JSON_SERVER_URL}/calculateMintVol`, {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json"
                   },
-                  body: JSON.stringify({personalId: params.id, sleepDuration: (durations/6 + params.sleepDuration)/2})
+                  body
                 })
                 const mintAmount = (await res.json()).vol;
-                
-                console.log(mintAmount)
+                const mintToAddress = await BoostNFTContract.methods.ownerOf(params.tokenId).call();
+                console.log("mint Amount", mintAmount)
+                console.log("mint address", mintToAddress)
+
                 // await fetch(`${JSON_SERVER_URL}/personalData/addSleepLog`, {
                 //     method: "POST",
                 //     headers: {'Content-Type': 'application/json'},

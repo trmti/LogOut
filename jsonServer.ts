@@ -93,7 +93,7 @@ serve(async (req) => {
         switch (urls[2]) {
           case 'levelUp': {
             const params = await req.json();
-            if (params.level && params.id) {
+            if (params.level && params.id !== undefined) {
               await connection.queryObject`
                 UPDATE nftPersonalDatas SET level = level + ${params.level} WHERE id = ${params.id}
               `;
@@ -106,7 +106,7 @@ serve(async (req) => {
           case 'addDamage': {
             const params = await req.json();
             const query = `UPDATE nftPersonalDatas set damages = damages || '{"(${params.datetime},${params.damage})"}' WHERE id = ${params.id}`;
-            if (params.datetime && params.damage && params.id) {
+            if (params.datetime && params.damage && params.id !== undefined) {
               await connection.queryObject(query);
               return new Response(`Added damage`, { status: 200 });
             }
@@ -120,7 +120,7 @@ serve(async (req) => {
           case 'addSleepLog': {
             const params = await req.json();
             const query = `UPDATE nftPersonalDatas set sleeps = sleeps || '{"(${params.date},${params.duration})"}' WHERE id = ${params.id}`;
-            if (params.date && params.duration && params.id) {
+            if (params.date && params.duration && params.id !== undefined) {
               await connection.queryObject(query);
               return new Response(`Added sleep log`, { status: 200 });
             }
@@ -228,7 +228,7 @@ serve(async (req) => {
 
       case 'calculateMintVol': {
         const params = await req.json();
-        if ((params.personalId, params.sleepDuration)) {
+        if ((params.personalId !== undefined, params.sleepDuration)) {
           if (params.sleepDuration > 12) {
             return new Response('sleepDuration is invalid', { status: 400 });
           }
@@ -241,7 +241,7 @@ serve(async (req) => {
           const gamma = (1 / 362880) * x ** 9 * Math.E ** x;
           return new Response(
             JSON.stringify({
-              vol: gamma * 10 ** 15,
+              vol: gamma * 10 ** 23,
             }),
             { headers: { 'Content-Type': 'application/json' } }
           );
