@@ -64,20 +64,34 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
 
         case "/mintToken": {
           const params = await req.json();
-          if (params.nftId && params.sleepDuration) {
+          if (params.id && params.nftId && params.sleepDuration) {
             try {
               const now = Date.now();
-              const date = new Date(now);
-              const formatedDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + '-';
+              const nowDate = new Date(now);
+              const formatedDate = nowDate.getFullYear() + '-' + nowDate.getMonth() + '-' + nowDate.getDate() + '-';
               await fetch(`${JSON_SERVER_URL}/personalData/addSleepLog`, {
                   method: "POST",
                   headers: {'Content-Type': 'application/json'},
                   body: JSON.stringify({id: params.nftId, duration: params.sleepDuration, date: formatedDate})
                 }
               )
-              const nftMetaData = await (await fetch(`${JSON_SERVER_URL}/NFTJsonData`)).json();
+              const nftMetaData = await (await fetch(`${JSON_SERVER_URL}/NFTJsonData?id=${params.id}`, {
+                method: "GET"
+              })).json();
               const sleepLog = nftMetaData.sleeps;
               console.log(sleepLog);
+              let durations = 0;
+              for (let i = sleepLog.length-1; i > 0; i--) {
+                const date = new Date(sleepLog.date);
+                const lastDate = Object.assign(nowDate, {});
+                if (date < lastDate) {
+                  break;
+                } else {
+                  console.log(sleepLog[i].duration)
+                  durations += Number(sleepLog[i].duration)
+                }
+              }
+              console.log(durations)
               return new Response("mint Successfully!!", {status: 200})
             } catch(e) {
               console.error(e);

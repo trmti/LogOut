@@ -41,7 +41,7 @@ try {
 } catch (e) {
   console.error(e);
 } finally {
-  // Release the connection back into the pool
+  // Release the connection back into the pool!
   connection.release();
 }
 
