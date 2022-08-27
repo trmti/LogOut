@@ -64,9 +64,25 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
 
         case "/mintToken": {
           const params = await req.json();
-          if (params.toAddress && params.amount) {
-            await GoodNightContract.methods.mint(params.toAddress, params.amount).send({from: account.address, gas: 1000000, gasPrice: "8000000000"})
-            return new Response("mint Successfully!!", {status: 200})
+          if (params.nftId && params.sleepDuration) {
+            try {
+              const now = Date.now();
+              const date = new Date(now);
+              const formatedDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + '-';
+              await fetch(`${JSON_SERVER_URL}/personalData/addSleepLog`, {
+                  method: "POST",
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({id: params.nftId, duration: params.sleepDuration, date: formatedDate})
+                }
+              )
+              const nftMetaData = await (await fetch(`${JSON_SERVER_URL}/NFTJsonData`)).json();
+              const sleepLog = nftMetaData.sleeps;
+              console.log(sleepLog);
+              return new Response("mint Successfully!!", {status: 200})
+            } catch(e) {
+              console.error(e);
+              return new Response("Internal Server Error", {status: 400})
+            }
           } else {
             return new Response(
               'Insert Value Failed. You may added invalid params',
