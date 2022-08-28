@@ -1,0 +1,23 @@
+openapi: 3.0.3
+info:
+  title: LogOut Server
+  description: This is a LogOut Server
+  contact:
+    name: API Support
+    email: trmtikko@gmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.1
+server:
+  url: https://trmti--og-ut.deno.dev
+  description: jsonServer
+tags:
+  - name: metaData
+    description: metaData for nft
+  - name: personalData
+    description: personalData for nft
+  - name: NFTJsonData
+    description: NFTJsonData
+  - name: calculateMintVol
+    description: calculate GNT mint volume
