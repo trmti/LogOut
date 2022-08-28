@@ -1,0 +1,13 @@
+get:
+  description: 全てのNFTのメタデータを取得する
+  summary: get all metaData
+  operationId: getAllMetaData
+  responses:
+    '200':
+      description: all metaData
+      content:
+        'application/json':
+          schema:
+            type: array
+            items:
+              $ref: '../../components.yaml#components#schemas#metaData'

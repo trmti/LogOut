@@ -9,9 +9,12 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.1
-server:
-  url: https://trmti--og-ut.deno.dev
-  description: jsonServer
+servers:
+  - url: https://trmti--og-ut.deno.dev
+    description: jsonServer
+paths:
+  /metaData:
+    $ref: './paths/metaData/metaData.yaml'
 tags:
   - name: metaData
     description: metaData for nft

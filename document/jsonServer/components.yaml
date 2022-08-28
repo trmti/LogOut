@@ -1,0 +1,22 @@
+components:
+  schemas:
+    metaData:
+      type: object
+      required:
+        - tokenId
+        - name
+        - description
+        - image
+        - HP
+      properties:
+        tokenId:
+          type: integer
+          minimum: 0
+        name:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+        HP:
+          type: number
