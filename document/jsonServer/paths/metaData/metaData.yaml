@@ -10,4 +10,4 @@ get:
           schema:
             type: array
             items:
-              $ref: '../../components.yaml#components#schemas#metaData'
+              $ref: '../../components.yaml#/components#/schemas#/metaData'
