@@ -1,0 +1,19 @@
+openapi: 3.0.3
+info:
+  title: LogOut Mint Server
+  description: This is a LogOut mint Server
+  contact:
+    name: API Support
+    email: trmtikko@gmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.1
+servers:
+  - url: https://trmti-mint-server.deno.dev/
+    description: mintServer
+paths:
+  /mintNFT:
+    $ref: './paths/mintNFT.yaml'
+  /mintToken:
+    $ref: './paths/mintToken.yaml'

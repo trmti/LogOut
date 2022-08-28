@@ -1,0 +1,14 @@
+post:
+  description: NFTをmintする
+  summary: Mint NFT
+  operationId: mintNFT
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas.yaml#/MintNFT'
+  responses:
+    200:
+      description: create nft successfully!!
+    400:
+      $ref: '../components/responses.yaml#/InvalidParam'

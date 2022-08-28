@@ -1,0 +1,18 @@
+post:
+  description: NFTにダメージを与える
+  summary: addDamageToNFT
+  operationId: addDamage
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas.yaml#/AddDamage'
+  responses:
+    200:
+      description: add damage successfully!
+      content:
+        text/plain:
+          schema:
+            type: string
+    400:
+      $ref: '../../components/responses.yaml#/InvalidParam'

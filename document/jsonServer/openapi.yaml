@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
-  title: LogOut Server
-  description: This is a LogOut Server
+  title: LogOut JSON Server
+  description: This is a LogOut JSON Server
   contact:
     name: API Support
     email: trmtikko@gmail.com
@@ -13,14 +13,22 @@ servers:
   - url: https://trmti--og-ut.deno.dev
     description: jsonServer
 paths:
+  /nftJsonData/{personalId}:
+    $ref: './paths/NFTJsonData/index.yaml'
+    parameters:
+      - name: personalId
+        in: path
+        description: personalDataのID
+        required: true
+        schema:
+          type: integer
   /metaData:
-    $ref: './paths/metaData/metaData.yaml'
-tags:
-  - name: metaData
-    description: metaData for nft
-  - name: personalData
-    description: personalData for nft
-  - name: NFTJsonData
-    description: NFTJsonData
-  - name: calculateMintVol
-    description: calculate GNT mint volume
+    $ref: './paths/metaData/index.yaml'
+  /personalData:
+    $ref: './paths/personalData/index.yaml'
+  /personalData/addDamage:
+    $ref: './paths/personalData/addDamage.yaml'
+  /personalData/addSleepLog:
+    $ref: './paths/personalData/addSleepLog.yaml'
+  /calculateMint:
+    $ref: './paths/calculateMintVol/index.yaml'

@@ -1,0 +1,133 @@
+# ------ metaData -----
+metaData:
+  type: object
+  properties:
+    tokenId:
+      type: integer
+    name:
+      type: string
+    description:
+      type: string
+    image:
+      type: string
+      format: uri
+    HP:
+      type: number
+      format: float
+PostMetaDataBody:
+  type: object
+  properties:
+    name:
+      type: string
+    description:
+      type: string
+    image:
+      type: string
+      format: uri
+    HP:
+      type: number
+      format: float
+
+# ----- personalData -----
+Damage:
+  type: object
+  properties:
+    date:
+      type: string
+      format: date
+    damage:
+      type: integer
+Sleep:
+  type: object
+  properties:
+    date:
+      type: string
+      format: date-time
+    duration:
+      type: integer
+PersonalData:
+  type: object
+  properties:
+    id:
+      type: integer
+    tokenId:
+      type: integer
+    tokenOwnerAddress:
+      type: string
+      pattern: '^0x[0-9|a-f|A-F]{40}'
+    level:
+      type: integer
+    damage:
+      type: array
+      items:
+        $ref: '#/Damage'
+    sleep:
+      type: array
+      items:
+        $ref: '#/Sleep'
+PostPersonalDataBody:
+  type: object
+  properties:
+    tokenId:
+      type: integer
+    tokenOwnerAddress:
+      type: string
+      pattern: '^0x[0-9|a-f|A-F]{40}'
+AddDamage:
+  type: object
+  properties:
+    datetime:
+      type: string
+      format: date-time
+    damage:
+      type: integer
+    personalId:
+      type: integer
+AddSleepLog:
+  type: object
+  properties:
+    date:
+      type: string
+      format: date
+    duration:
+      type: integer
+    personalId:
+      type: integer
+
+# ----- NftJsonData -----
+NftJsonData:
+  type: object
+  properties:
+    tokenId:
+      type: integer
+    name:
+      type: string
+    description:
+      type: string
+    image:
+      type: string
+      format: uri
+    attributes:
+      type: object
+      properties:
+        level:
+          type: integer
+        HP:
+          type: integer
+    damages:
+      type: array
+      items:
+        $ref: '#/Damage'
+    sleeps:
+      type: array
+      items:
+        $ref: '#/Sleep'
+
+# ----- calculateMintVol -----
+CalculateMintVol:
+  type: object
+  properties:
+    personalId:
+      type: integer
+    sleepDuration:
+      type: integer

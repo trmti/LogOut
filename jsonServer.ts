@@ -21,7 +21,7 @@ try {
       HP FLOAT NOT NULL)
   `;
   // CREATE TYPE DAMAGE AS (
-  //   date TIMESTAMP,
+  //   date DATE,
   //   damage INT
   // );
   // CREATE TYPE SLEEP AS (
@@ -74,7 +74,7 @@ serve(async (req) => {
               const createdObject = await connection.queryObject`
                 INSERT INTO nftMetaDatas (name ,description, image, HP) VALUES (${params.name}, ${params.description}, ${params.image}, ${params.HP}) RETURNING tokenid
               `;
-              const body = JSON.stringify(createdObject.rows, null, 2);
+              const body = JSON.stringify(createdObject.rows[0], null, 2);
               return new Response(body, {
                 headers: { 'Content-Type': 'application/json' },
               });
@@ -84,7 +84,7 @@ serve(async (req) => {
             });
           }
           default: {
-            return new Response('Invalid method', { status: 400 });
+            return new Response('Invalid method', { status: 401 });
           }
         }
       }
@@ -93,9 +93,9 @@ serve(async (req) => {
         switch (urls[2]) {
           case 'levelUp': {
             const params = await req.json();
-            if (params.level && params.id !== undefined) {
+            if (params.level && params.personalId !== undefined) {
               await connection.queryObject`
-                UPDATE nftPersonalDatas SET level = level + ${params.level} WHERE id = ${params.id}
+                UPDATE nftPersonalDatas SET level = level + ${params.level} WHERE id = ${params.personalId}
               `;
               return new Response(`Updated level`, { status: 200 });
             }
@@ -105,8 +105,12 @@ serve(async (req) => {
           }
           case 'addDamage': {
             const params = await req.json();
-            const query = `UPDATE nftPersonalDatas set damages = damages || '{"(${params.datetime},${params.damage})"}' WHERE id = ${params.id}`;
-            if (params.datetime && params.damage && params.id !== undefined) {
+            if (
+              params.datetime &&
+              params.damage &&
+              params.personalId !== undefined
+            ) {
+              const query = `UPDATE nftPersonalDatas set damages = damages || '{"(${params.datetime},${params.damage})"}' WHERE id = ${params.personalId}`;
               await connection.queryObject(query);
               return new Response(`Added damage`, { status: 200 });
             }
@@ -119,8 +123,12 @@ serve(async (req) => {
           }
           case 'addSleepLog': {
             const params = await req.json();
-            const query = `UPDATE nftPersonalDatas set sleeps = sleeps || '{"(${params.date},${params.duration})"}' WHERE id = ${params.id}`;
-            if (params.date && params.duration && params.id !== undefined) {
+            if (
+              params.date &&
+              params.duration &&
+              params.personalId !== undefined
+            ) {
+              const query = `UPDATE nftPersonalDatas set sleeps = sleeps || '{"(${params.date},${params.duration})"}' WHERE id = ${params.personalId}`;
               await connection.queryObject(query);
               return new Response(`Added sleep log`, { status: 200 });
             }
@@ -148,7 +156,7 @@ serve(async (req) => {
                   const createdObject = await connection.queryObject`
                     INSERT INTO nftPersonalDatas (tokenId, tokenOwnerAddress) VALUES (${params.tokenId}, ${params.tokenOwnerAddress}) RETURNING id
                   `;
-                  const body = JSON.stringify(createdObject.rows, null, 2);
+                  const body = JSON.stringify(createdObject.rows[0], null, 2);
                   return new Response(body, {
                     headers: { 'Content-Type': 'application/json' },
                   });
@@ -167,9 +175,9 @@ serve(async (req) => {
       case 'NFTJsonData': {
         switch (req.method) {
           case 'GET': {
-            const id = url.searchParams.get('id');
+            const personalId = url.searchParams.get('personalId');
             const nftPersonalDatas =
-              await connection.queryObject`SELECT * FROM nftPersonalDatas WHERE id = ${id}`;
+              await connection.queryObject`SELECT * FROM nftPersonalDatas WHERE id = ${personalId}`;
             const nftPersonalDatasJson = JSON.parse(
               JSON.stringify(nftPersonalDatas.rows, null, 2)
             )[0];
@@ -183,23 +191,23 @@ serve(async (req) => {
             const damages = [];
             const sleeps = [];
             const damageLength =
-              await connection.queryObject`SELECT damages, ARRAY_LENGTH(damages, 1) from nftpersonaldatas Where id = ${id}`;
+              await connection.queryObject`SELECT damages, ARRAY_LENGTH(damages, 1) from nftpersonaldatas Where id = ${personalId}`;
             const damageLengthJson = JSON.parse(
               JSON.stringify(damageLength.rows, null, 2)
             )[0];
             const sleepLength =
-              await connection.queryObject`SELECT sleeps, ARRAY_LENGTH(sleeps, 1) from nftPersonalDatas where id = ${id}`;
+              await connection.queryObject`SELECT sleeps, ARRAY_LENGTH(sleeps, 1) from nftPersonalDatas where id = ${personalId}`;
             const sleepLengthJson = JSON.parse(
               JSON.stringify(sleepLength.rows, null, 2)
             )[0];
             for (let i = 1; i < damageLengthJson.array_length + 1; i++) {
               const damage =
-                await connection.queryObject`SELECT damages[${i}].date, damages[${i}].damage FROM nftPersonalDatas WHERE id = ${id}`;
+                await connection.queryObject`SELECT damages[${i}].date, damages[${i}].damage FROM nftPersonalDatas WHERE id = ${personalId}`;
               damages.push(damage.rows[0]);
             }
             for (let i = 1; i < sleepLengthJson.array_length + 1; i++) {
               const sleep =
-                await connection.queryObject`SELECT sleeps[${i}].date, sleeps[${i}].duration FROM nftPersonalDatas WHERE id = ${id}`;
+                await connection.queryObject`SELECT sleeps[${i}].date, sleeps[${i}].duration FROM nftPersonalDatas WHERE id = ${personalId}`;
               sleeps.push(sleep.rows[0]);
             }
             return new Response(

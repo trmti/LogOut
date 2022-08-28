@@ -1,0 +1,13 @@
+get:
+  description: NFTに関する情報を取得する
+  summary: Get Nft Data By Id
+  operationId: getNftDataById
+  responses:
+    200:
+      description: get nft data Successfully
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas.yaml#/NftJsonData'
+    400:
+      $ref: '../../components/responses.yaml#/InvalidMethod'

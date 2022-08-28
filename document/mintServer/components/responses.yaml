@@ -1,0 +1,6 @@
+InvalidParam:
+  description: Insert Value Failed. You may mistake params
+InvalidMethod:
+  description: Invalid method
+InternalServerError:
+  description: Internal Server Error

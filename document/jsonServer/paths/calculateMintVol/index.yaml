@@ -1,0 +1,22 @@
+post:
+  description: GNTのmint量を計算する
+  summary: Calculate Mint Volume
+  operationId: CalculateMintVol
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas.yaml#/CalculateMintVol'
+  responses:
+    200:
+      description: return mint vol
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              vol:
+                type: number
+                format: float
+    400:
+      $ref: '../../components/responses.yaml#/InvalidParam'

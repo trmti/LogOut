@@ -1,0 +1,14 @@
+post:
+  description: GNTをmintする
+  summary: Mint Token
+  operationId: mintToken
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas.yaml#/MintToken'
+  responses:
+    200:
+      description: mint successfully!!
+    400:
+      $ref: '../components/responses.yaml#/InvalidParam'

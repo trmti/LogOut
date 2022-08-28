@@ -1,0 +1,17 @@
+post:
+  description: 睡眠時間を記録
+  summary: Add Sleep Log
+  operationId: addSleepLog
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas.yaml#/AddSleepLog'
+  responses:
+    200:
+      description: added new sleepLog
+      content:
+        text/plain:
+          type: string
+    400:
+      $ref: '../../components/responses.yaml#/InvalidParam'

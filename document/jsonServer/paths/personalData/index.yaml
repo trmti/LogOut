@@ -1,0 +1,35 @@
+get:
+  description: 全てのpersonalDataを取得する
+  summary: Get all personalData
+  operationId: getPersonalData
+  responses:
+    '200':
+      description: get personalData successfully
+      content:
+        'application/json':
+          schema:
+            type: array
+            items:
+              $ref: '../../components/schemas.yaml#/PersonalData'
+
+post:
+  description: 新しいpersonalDataを作成
+  summary: Create new PersonalData
+  operationId: postPersonalData
+  requestBody:
+    content:
+      'application/json':
+        schema:
+          $ref: '../../components/schemas.yaml#/PostPersonalDataBody'
+  responses:
+    '200':
+      description: create new PersonalData
+      content:
+        'application/json':
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+    '400':
+      $ref: '../../components/responses.yaml#/InvalidParam'
