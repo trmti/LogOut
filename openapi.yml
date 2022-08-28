@@ -4,7 +4,7 @@ info:
   title: Example.com
   termsOfService: 'https://example.com/terms/'
   contact:
-    email: contact@example.com
+    email: trmtikko@gmail.com
     url: 'http://example.com/contact'
   license:
     name: Apache 2.0
@@ -25,10 +25,27 @@ servers:
   - url: 'http://example.com/api/v1'
   - url: 'https://example.com/api/v1'
 paths:
-  # paths here
+  '/users/{username}':
+    $ref: 'paths/users@{username}.yaml'
+  /echo:
+    $ref: paths/echo.yaml
 components:
   securitySchemes:
-    # security schemes here
+    main_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://example.com/api/oauth/dialog'
+          scopes:
+            'read:users': read users info
+            'write:users': modify or remove users
+    api_key:
+      type: apiKey
+      in: header
+      name: api_key
+    basic_auth:
+      type: http
+      scheme: basic
 security:
   - SecretAPIKey: []
   - JWT: []
