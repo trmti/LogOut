@@ -249,7 +249,7 @@ serve(async (req) => {
           const gamma = (1 / 362880) * x ** 9 * Math.E ** x;
           return new Response(
             JSON.stringify({
-              vol: gamma * 10 ** 11,
+              vol: gamma * 10 ** 14,
             }),
             { headers: { 'Content-Type': 'application/json' } }
           );
