@@ -75,7 +75,8 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
               const nftMetaData = await (await fetch(`${JSON_SERVER_URL}/NFTJsonData?personal_Id=${personalId}`, {
                 method: "GET"
               })).json();
-              const sleepLog = nftMetaData.sleeps;
+              // deno-lint-ignore no-explicit-any
+              const sleepLog:Array<any> = Array.from(nftMetaData.sleeps);
               console.log(typeof sleepLog);
               let latestDate;
               if (sleepLog.length !== 0) {
@@ -99,7 +100,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
               ) {
                 let durations = 0;
                 for (let i = sleepLog.length-1; i > 0; i--) {
-                  const date = new Date(sleepLog.date);
+                  const date = new Date(sleepLog[i].date);
                   const lastDate = Object.assign(nowDate, {});
                   if (date < lastDate) {
                     break;

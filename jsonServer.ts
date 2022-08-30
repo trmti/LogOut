@@ -210,7 +210,6 @@ serve(async (req) => {
                 await connection.queryObject`SELECT sleeps[${i}].date, sleeps[${i}].duration FROM nftPersonalDatas WHERE id = ${personalId}`;
               sleeps.push(sleep.rows[0]);
             }
-            console.log(nftMetaDatasJson);
             return new Response(
               JSON.stringify({
                 tokenId: nftMetaDatasJson.tokenid,
