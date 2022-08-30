@@ -109,8 +109,8 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                       durations += Number(sleepLog[i].duration)
                     }
                   }
+                  console.log("durations", durations);
                 }
-                console.log("durations", durations);
                 const body = JSON.stringify(
                   {personalId, sleepDuration: ~~((durations/6 + params.sleepDuration)/2)}
                   )
