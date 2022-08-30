@@ -51,7 +51,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
               return new Response(JSON.stringify({nftId: Number(res.events.Transfer.returnValues.tokenId)}), {headers: { 'Content-Type': 'application/json' }})
             } catch(e) {
               console.error(e);
-              return new Response("create nft failed", {status: 400})
+              return new Response("create nft failed", {status: 400});
             }
           } else {
             return new Response(
