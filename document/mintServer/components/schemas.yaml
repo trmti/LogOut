@@ -9,7 +9,7 @@ MintNFT:
 MintToken:
   type: object
   properties:
-    tokenId:
+    nftId:
       type: integer
     sleepDuration:
       type: number

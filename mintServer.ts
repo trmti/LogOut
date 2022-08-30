@@ -66,12 +66,12 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
         case "/mintToken": {
           const params = await req.json();
           console.log(params)
-          if (params.tokenId !== undefined && params.sleepDuration) {
+          if (params.nftId !== undefined && params.sleepDuration) {
             try {
               const now = Date.now();
               const nowDate = new Date(now);
               const formatedDate = nowDate.getFullYear() + '-' + (nowDate.getMonth()+1) + '-' + nowDate.getDate() + '-';
-              const personalId = await BoostNFTContract.methods.getPersonalId(params.tokenId).call({from: account.address});
+              const personalId = await BoostNFTContract.methods.getPersonalId(params.nftId).call({from: account.address});
               const nftMetaData = await (await fetch(`${JSON_SERVER_URL}/NFTJsonData?id=${personalId}`, {
                 method: "GET"
               })).json();
