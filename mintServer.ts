@@ -110,17 +110,17 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                     }
                   }
                 }
-                console.log("checkpoint")
                 const body = JSON.stringify(
                   {personalId, sleepDuration: ~~((durations/6 + params.sleepDuration)/2)}
-                )
-                const res = await fetch(`${JSON_SERVER_URL}/calculateMintVol`, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json"
-                  },
-                  body
-                })
+                  )
+                  const res = await fetch(`${JSON_SERVER_URL}/calculateMintVol`, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json"
+                    },
+                    body
+                  })
+                  console.log("checkpoint")
                 const mintAmount = (await res.json()).vol;
                 const mintToAddress = await BoostNFTContract.methods.ownerOf(params.tokenId).call();
                 console.log("mint Amount", mintAmount)
