@@ -22,7 +22,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
   const BoostNFTContract = new web3.eth.Contract(BoostNFTABI as AbiItem[], BOOSTTOKEN_ADDRESS);
   web3.eth.accounts.wallet.add(account);
   web3.eth.defaultAccount = account.address;
-  console.log("server runninng")
+  console.log("server runninng");
 
   serve(async (req) => {
     const url = new URL(req.url);
