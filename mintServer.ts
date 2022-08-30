@@ -98,9 +98,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                 )
               ) {
                 let durations = 0;
-                if (sleepLog.length === 0) {
-                  durations = 0;
-                } else {
+                if (sleepLog.length !== 0) {
                   for (let i = sleepLog.length-1; i > 0; i--) {
                     const date = new Date(sleepLog[i].date);
                     const lastDate = Object.assign(nowDate, {});
