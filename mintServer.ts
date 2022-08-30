@@ -46,7 +46,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                 body: JSON.stringify(body)
               })
               const respJson = await resp.json();
-              await BoostNFTContract.methods.safeMint(params.toAddress, respJson[0].id).send({from: account.address, gas: 1000000, gasPrice: "8000000000"})
+              await BoostNFTContract.methods.safeMint(params.toAddress, respJson.id).send({from: account.address, gas: 1000000, gasPrice: "8000000000"})
               console.log("create nft successfully!!")
               return new Response("create nft successfully!!", {status: 200})
             } catch(e) {
