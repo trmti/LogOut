@@ -122,7 +122,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                   });
                   const mintAmount = (await res.json()).vol;
                   console.log("checkpoint")
-                  const mintToAddress = await BoostNFTContract.methods.ownerOf(params.tokenId).call();
+                  const mintToAddress = await BoostNFTContract.methods.ownerOf(params.nftId).call();
                 console.log("mint Amount", mintAmount)
                 console.log("mint address", mintToAddress)
                 await GoodNightContract.methods.mint(mintToAddress, ~~(mintAmount * 10 ** 8)).send({from: account.address, gas: 1000000, gasPrice: "8000000000"})
