@@ -76,7 +76,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                 method: "GET"
               })).json();
               const sleepLog = nftMetaData.sleeps;
-              console.log(sleepLog);
+              console.log(typeof sleepLog);
               let latestDate;
               if (sleepLog.length !== 0) {
                 latestDate = new Date(sleepLog[sleepLog.length - 1].date.split(".")[0])
