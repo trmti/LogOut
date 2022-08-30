@@ -102,6 +102,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                     const date = new Date(sleepLog[i].date);
                     console.log("chackpoint", sleepLog[i], date)
                     const lastDate = Object.assign(nowDate, {});
+                    lastDate.setDate(lastDate.getDate() - 7)
                     if (date < lastDate) {
                       break;
                     } else {
