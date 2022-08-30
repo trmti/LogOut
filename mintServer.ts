@@ -97,7 +97,8 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                   latestDate.getDate() < nowDate.getDate()
                 )
               ) {
-                let durations = 0;
+                // deno-lint-ignore no-explicit-any
+                let durations: any;
                 console.log(sleepLog.length, sleepLog.length !== 0);
                 if (sleepLog.length !== 0) {
                   for (let i = sleepLog.length - 1; i > 0; i--) {
