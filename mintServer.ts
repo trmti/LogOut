@@ -7,9 +7,9 @@ import BoostNFTABI from "./BoostNFT.json" assert { type: "json" }
 
 const MINTER_PRIVATE_KEY = Deno.env.get("MINTER_PRIVATE_KEY");
 const GNTOKEN_ADDRESS = Deno.env.get("GNTOKEN_ADDRESS");
-const PROVIDER_URL = Deno.env.get("PROVIDER_URL")
-const BOOSTTOKEN_ADDRESS = Deno.env.get("BOOSTTOKEN_ADDRESS")
-const JSON_SERVER_URL = Deno.env.get("JSON_SERVER_URL")
+const PROVIDER_URL = Deno.env.get("PROVIDER_URL");
+const BOOSTTOKEN_ADDRESS = Deno.env.get("BOOSTTOKEN_ADDRESS");
+const JSON_SERVER_URL = Deno.env.get("JSON_SERVER_URL");
 
 let web3;
 
