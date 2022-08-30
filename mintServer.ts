@@ -120,9 +120,8 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                     },
                     body
                   });
-                  const mintAmount = (await res.json()).vol;
-                  console.log("checkpoint")
-                  const mintToAddress = await BoostNFTContract.methods.ownerOf(params.nftId).call();
+                const mintAmount = (await res.json()).vol;
+                const mintToAddress = await BoostNFTContract.methods.ownerOf(params.nftId).call();
                 console.log("mint Amount", mintAmount)
                 console.log("mint address", mintToAddress)
                 await GoodNightContract.methods.mint(mintToAddress, ~~(mintAmount * 10 ** 8)).send({from: account.address, gas: 1000000, gasPrice: "8000000000"})
@@ -130,7 +129,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
                 await fetch(`${JSON_SERVER_URL}/personalData/addSleepLog`, {
                     method: "POST",
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({id: personalId, duration: params.sleepDuration, date: formatedDate})
+                    body: JSON.stringify({ personalId, duration: params.sleepDuration, date: formatedDate})
                   })
                 console.log("mint Successfully!!")
                 return new Response("mint Successfully!!", {status: 200})
