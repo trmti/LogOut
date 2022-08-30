@@ -72,7 +72,7 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
               const nowDate = new Date(now);
               const formatedDate = nowDate.getFullYear() + '-' + (nowDate.getMonth()+1) + '-' + nowDate.getDate() + '-';
               const personalId = await BoostNFTContract.methods.getPersonalId(params.nftId).call({from: account.address});
-              const nftMetaData = await (await fetch(`${JSON_SERVER_URL}/NFTJsonData?id=${personalId}`, {
+              const nftMetaData = await (await fetch(`${JSON_SERVER_URL}/NFTJsonData?personal_id=${personalId}`, {
                 method: "GET"
               })).json();
               const sleepLog = nftMetaData.sleeps;

@@ -175,7 +175,7 @@ serve(async (req) => {
       case 'NFTJsonData': {
         switch (req.method) {
           case 'GET': {
-            const personalId = url.searchParams.get('personalId');
+            const personalId = url.searchParams.get('personal_Id');
             const nftPersonalDatas =
               await connection.queryObject`SELECT * FROM nftPersonalDatas WHERE id = ${personalId}`;
             const nftPersonalDatasJson = JSON.parse(

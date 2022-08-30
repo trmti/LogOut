@@ -13,7 +13,7 @@ servers:
   - url: https://trmti--og-ut.deno.dev
     description: jsonServer
 paths:
-  /nftJsonData/{personalId}:
+  /NFTJsonData?personal_id={personalId}:
     $ref: './paths/NFTJsonData/index.yaml'
     parameters:
       - name: personalId
