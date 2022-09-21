@@ -1,6 +1,6 @@
 import { serve } from 'https://deno.land/std@0.114.0/http/server.ts';
 import "https://deno.land/x/dotenv@v3.2.0/load.ts";
-import Web3 from "https://deno.land/x/web3@v0.11.1/mod.ts"
+import * as Web3 from "https://deno.land/x/web3@v0.11.1/mod.ts";
 import { AbiItem } from "https://deno.land/x/web3@v0.11.0/packages/web3-utils/types/index.d.ts";
 import GoodNightABI from "./GoodNightToken.json" assert { type: "json" }
 import BoostNFTABI from "./BoostNFT.json" assert { type: "json" }
@@ -14,7 +14,7 @@ const JSON_SERVER_URL = Deno.env.get("JSON_SERVER_URL");
 let web3;
 
 if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS && JSON_SERVER_URL) {
-  web3 = new Web3(
+  web3 = new Web3.default(
     PROVIDER_URL
   );
   const account = web3.eth.accounts.privateKeyToAccount(MINTER_PRIVATE_KEY);
