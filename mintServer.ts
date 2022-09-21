@@ -156,5 +156,5 @@ if (MINTER_PRIVATE_KEY && GNTOKEN_ADDRESS && PROVIDER_URL && BOOSTTOKEN_ADDRESS 
     }
   })
 } else {
-  console.error('環境変数が正しく設定されていません');
+  console.error('環境変数が正しく設定されていません')
 }
